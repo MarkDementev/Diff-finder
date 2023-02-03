@@ -4,9 +4,6 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.concurrent.Callable;
 
 //Темур! Стоит ли отправить текст, выводимый @Command, @Option, @Parameters
@@ -20,10 +17,10 @@ public class App implements Callable<Integer> {
             description = "output format [default: stylish]", defaultValue = "stylish")
     private String formatName;
 
-    @Parameters(paramLabel = "filePath1", index = "0", description = "path to first file")
+    @Parameters(paramLabel = "filepath1", index = "0", description = "path to first file")
     private String firstFilePath;
 
-    @Parameters(paramLabel = "filePath2", index = "1", description ="path to second file")
+    @Parameters(paramLabel = "filepath2", index = "1", description ="path to second file")
     private String secondFilePath;
 
     public static void main(String[] args) {
