@@ -9,17 +9,22 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.Callable;
 
+//Темур! Стоит ли отправить текст, выводимый @Command, @Option, @Parameters
+//в String константы класса? Это ведь элементы фреймворка picocli, а не исходная Java
+//я предположил, что не нужно. Поправь меня, если я не прав, и наличие фреймворков не отменяет правило
 @Command(name = "gendiff", mixinStandardHelpOptions = true, version = "gendiff 0.1",
         description = "Compares two configuration files and shows a difference.")
+
 public class App implements Callable<Integer> {
-    @Option(names = {"-f", "--format"}, paramLabel = "format", description = "output format [default: stylish]")
-    int format;
+    @Option(names = {"-f", "--format"}, paramLabel = "format",
+            description = "output format [default: stylish]", defaultValue = "stylish")
+    private String formatName;
 
     @Parameters(paramLabel = "filePath1", index = "0", description = "path to first file")
-    private String filePath1;
+    private String firstFilePath;
 
     @Parameters(paramLabel = "filePath2", index = "1", description ="path to second file")
-    private String filePath2;
+    private String secondFilePath;
 
     public static void main(String[] args) {
         int exitCode = new CommandLine(new App()).execute(args);
@@ -27,7 +32,8 @@ public class App implements Callable<Integer> {
     }
 
     @Override
-    public Integer call() {
+    public Integer call() throws Exception {
+        System.out.println(Differ.generate(firstFilePath, secondFilePath));
         return 0;
     }
 }
