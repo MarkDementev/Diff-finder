@@ -11,6 +11,7 @@ import java.util.TreeMap;
 
 public class Differ {
     private static final String[] KEY_TYPES = {"unchanged", "deleted", "updated", "added"};
+
     public static String generate(String firstFilePath, String secondFilePath) throws Exception {
         String firstFileToString = pathCheckThenToString(firstFilePath);
         String secondFileToString = pathCheckThenToString(secondFilePath);
@@ -18,36 +19,8 @@ public class Differ {
         Map<String, Object> firstFileParsedMap = mapper.readValue(firstFileToString, new TypeReference<>() { });
         Map<String, Object> secondFileParsedMap = mapper.readValue(secondFileToString, new TypeReference<>() { });
         Map<String, String> keyTypes = formKeyTypesMap(firstFileParsedMap, secondFileParsedMap);
-        StringBuilder treeMapToOutputString = new StringBuilder();
 
-        treeMapToOutputString.append("\n").append("{\n");
-
-        for (Map.Entry<String, String> element : keyTypes.entrySet()) {
-            String elementKey = element.getKey();
-            Object elementValue = element.getValue();
-
-            if (elementValue.equals(KEY_TYPES[0])) {
-                treeMapToOutputString
-                        .append("   ").append(elementKey).append(": ")
-                        .append(firstFileParsedMap.get(elementKey)).append("\n");
-            } else if (elementValue.equals(KEY_TYPES[1])) {
-                treeMapToOutputString
-                        .append(" - ").append(elementKey).append(": ")
-                        .append(firstFileParsedMap.get(elementKey)).append("\n");
-            } else if (elementValue.equals(KEY_TYPES[2])) {
-                treeMapToOutputString
-                        .append(" - ").append(elementKey).append(": ")
-                        .append(firstFileParsedMap.get(elementKey)).append("\n")
-                        .append(" + ").append(elementKey).append(": ")
-                        .append(secondFileParsedMap.get(elementKey)).append("\n");
-            } else if (elementValue.equals(KEY_TYPES[3])) {
-                treeMapToOutputString
-                        .append(" + ").append(elementKey).append(": ")
-                        .append(secondFileParsedMap.get(elementKey)).append("\n");
-            }
-        }
-        treeMapToOutputString.append("}");
-        return treeMapToOutputString.toString();
+        return formOutputString(keyTypes, firstFileParsedMap, secondFileParsedMap);
     }
 
     private static String pathCheckThenToString(String filePath) throws Exception {
@@ -84,5 +57,41 @@ public class Differ {
             }
         }
         return keyTypes;
+    }
+
+    private static String formOutputString(Map<String, String> keyTypes,
+                                           Map<String, Object> firstFileParsedMap,
+                                           Map<String, Object> secondFileParsedMap) {
+        StringBuilder treeMapToOutputString = new StringBuilder();
+
+        treeMapToOutputString.append("\n").append("{\n");
+
+        for (Map.Entry<String, String> element : keyTypes.entrySet()) {
+            String elementKey = element.getKey();
+            Object elementValue = element.getValue();
+
+            if (elementValue.equals(KEY_TYPES[0])) {
+                treeMapToOutputString
+                        .append("   ").append(elementKey).append(": ")
+                        .append(firstFileParsedMap.get(elementKey));
+            } else if (elementValue.equals(KEY_TYPES[1])) {
+                treeMapToOutputString
+                        .append(" - ").append(elementKey).append(": ")
+                        .append(firstFileParsedMap.get(elementKey));
+            } else if (elementValue.equals(KEY_TYPES[2])) {
+                treeMapToOutputString
+                        .append(" - ").append(elementKey).append(": ")
+                        .append(firstFileParsedMap.get(elementKey)).append("\n")
+                        .append(" + ").append(elementKey).append(": ")
+                        .append(secondFileParsedMap.get(elementKey));
+            } else if (elementValue.equals(KEY_TYPES[3])) {
+                treeMapToOutputString
+                        .append(" + ").append(elementKey).append(": ")
+                        .append(secondFileParsedMap.get(elementKey));
+            }
+            treeMapToOutputString.append("\n");
+        }
+        treeMapToOutputString.append("}");
+        return treeMapToOutputString.toString();
     }
 }
