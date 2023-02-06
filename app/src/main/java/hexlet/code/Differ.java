@@ -70,16 +70,18 @@ public class Differ {
             if (elementValue.equals(KEY_TYPES[0])) {
                 treeMapToOutputString
                         .append("   ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey));
-            } else if (elementValue.equals(KEY_TYPES[1]) || elementValue.equals(KEY_TYPES[2])) {
+            } else if (elementValue.equals(KEY_TYPES[1])) {
                 treeMapToOutputString
                         .append(" - ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey));
-            } if (elementValue.equals(KEY_TYPES[2])) {
+            } else if (elementValue.equals(KEY_TYPES[2])) {
                 treeMapToOutputString
+                        .append(" - ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey))
                         .append("\n + ").append(elementKey).append(": ").append(secondFileParsedMap.get(elementKey));
             } else if (elementValue.equals(KEY_TYPES[3])) {
                 treeMapToOutputString
                         .append(" + ").append(elementKey).append(": ").append(secondFileParsedMap.get(elementKey));
             }
+
             treeMapToOutputString.append("\n");
         }
         return treeMapToOutputString.append("}").toString();
