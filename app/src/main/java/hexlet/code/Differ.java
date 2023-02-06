@@ -59,12 +59,9 @@ public class Differ {
         return keyTypes;
     }
 
-    private static String formOutputString(Map<String, String> keyTypes,
-                                           Map<String, Object> firstFileParsedMap,
+    private static String formOutputString(Map<String, String> keyTypes, Map<String, Object> firstFileParsedMap,
                                            Map<String, Object> secondFileParsedMap) {
-        StringBuilder treeMapToOutputString = new StringBuilder();
-
-        treeMapToOutputString.append("\n").append("{\n");
+        StringBuilder treeMapToOutputString = new StringBuilder("\n{\n");
 
         for (Map.Entry<String, String> element : keyTypes.entrySet()) {
             String elementKey = element.getKey();
@@ -91,7 +88,6 @@ public class Differ {
             }
             treeMapToOutputString.append("\n");
         }
-        treeMapToOutputString.append("}");
-        return treeMapToOutputString.toString();
+        return treeMapToOutputString.append("}").toString();
     }
 }
