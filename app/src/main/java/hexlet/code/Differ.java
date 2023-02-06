@@ -18,17 +18,17 @@ public class Differ {
         if (!Files.exists(absoluteFirstFilePath)) {
             throw new Exception("'" + absoluteFirstFilePath + "' does not exist.\nBut check both paths!");
         } else if (!Files.exists(absoluteSecondFilePath)) {
-            throw new Exception("'" + absoluteFirstFilePath + "' path exist.\n" +
-                    "But '" + absoluteSecondFilePath + "' does not exist.\nCheck it!");
+            throw new Exception("'" + absoluteFirstFilePath + "' path exist.\n"
+                    + "But '" + absoluteSecondFilePath + "' does not exist.\nCheck it!");
         }
         String firstFileToString = Files.readString(absoluteFirstFilePath);
         String secondFileToString = Files.readString(absoluteSecondFilePath);
         ObjectMapper mapper = new ObjectMapper();
         StringBuilder treeMapToOutputString = new StringBuilder();
         Map<String, Object> firstFileMap = mapper.readValue(
-                firstFileToString, new TypeReference<>() {});
+                firstFileToString, new TypeReference<>() { });
         Map<String, Object> secondFileMap = mapper.readValue(
-                secondFileToString, new TypeReference<>() {});
+                secondFileToString, new TypeReference<>() { });
         Map<String, Object> checkedKeys = new TreeMap<>();
 
         for (Map.Entry<String, Object> firstMapElement : firstFileMap.entrySet()) {

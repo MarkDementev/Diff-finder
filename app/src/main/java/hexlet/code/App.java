@@ -20,7 +20,7 @@ public class App implements Callable<Integer> {
     @Parameters(paramLabel = "filepath1", index = "0", description = "path to first file")
     private String firstFilePath;
 
-    @Parameters(paramLabel = "filepath2", index = "1", description ="path to second file")
+    @Parameters(paramLabel = "filepath2", index = "1", description = "path to second file")
     private String secondFilePath;
 
     public static void main(String[] args) {

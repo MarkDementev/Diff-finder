@@ -7,5 +7,7 @@ build:
 	./gradlew installDist
 lint:
 	./gradlew checkstyleMain
+lint-test:
+	./gradlew checkstyleTest
 
 .PHONY: build
