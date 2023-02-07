@@ -9,5 +9,9 @@ lint:
 	./gradlew checkstyleMain
 lint-test:
 	./gradlew checkstyleTest
+test:
+	./gradlew test
+report:
+	./gradlew jacocoTestReport
 
 .PHONY: build
