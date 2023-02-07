@@ -10,7 +10,7 @@ install:
 	./gradlew clean install
 
 run-dist:
-	./build/install/java-package/bin/java-package
+	./build/install/app/bin/app ./src/test/resources/fixtures/differTestFirstPath1.json ./src/test/resources/fixtures/differTestFirstPath2.json
 
 run:
 	./gradlew run
