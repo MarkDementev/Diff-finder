@@ -1,8 +1,11 @@
 package hexlet.code;
 
 import org.junit.jupiter.api.Test;
+
+import java.nio.file.Paths;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatException;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class DifferTest {
     private String differTestFirstCorrectString = "\n{\n"
@@ -83,7 +86,10 @@ public class DifferTest {
     public void differTestNoFileJSON() {
         String firstPath = "./src/test/resources/fixtures/JSON-files/this file is fantasy.json";
         String secondPath = "./src/test/resources/fixtures/JSON-files/differTestFirstPath1.json";
-        assertThatException().isThrownBy(() -> Differ.generate(firstPath, secondPath));
+        assertThatThrownBy(() -> Differ.generate(firstPath, secondPath))
+                .isInstanceOf(Exception.class)
+                .hasMessageContaining("'" + Paths.get(firstPath).toAbsolutePath().normalize()
+                        + "' does not exist.\nCheck it!");
     }
 
     @Test
@@ -130,40 +136,58 @@ public class DifferTest {
     public void differTestNoFileYAML() {
         String firstPath = "./src/test/resources/fixtures/YAML-files/this file is fantasy.yml";
         String secondPath = "./src/test/resources/fixtures/YAML-files/differTestFirstPath1.yml";
-        assertThatException().isThrownBy(() -> Differ.generate(firstPath, secondPath));
+        assertThatThrownBy(() -> Differ.generate(firstPath, secondPath))
+                .isInstanceOf(Exception.class)
+                .hasMessageContaining("'" + Paths.get(firstPath).toAbsolutePath().normalize()
+                        + "' does not exist.\nCheck it!");
     }
 
     @Test
-    public void differTestUncknownFormatFirstPath() {
+    public void differTestUnknownFormatFirstPath() {
         String firstPath = "./src/test/resources/fixtures/OTH-files/differTestUncknownFormatFirstPath.oth";
         String secondPath = "./src/test/resources/fixtures/JSON-files/differTestFirstPath1.json";
-        assertThatException().isThrownBy(() -> Differ.generate(firstPath, secondPath));
+        assertThatThrownBy(() -> Differ.generate(firstPath, secondPath))
+                .isInstanceOf(Exception.class)
+                .hasMessageContaining("'" + Paths.get(firstPath).toAbsolutePath().normalize()
+                        + "' has unknown filename extension.\nCheck it!");
     }
 
     @Test
-    public void differTestUncknownFormatSecondPath() {
+    public void differTestUnknownFormatSecondPath() {
         String firstPath = "./src/test/resources/fixtures/YAML-files/emptyFile.yml";
         String secondPath = "./src/test/resources/fixtures/OTH-files/differTestUncknownFormatFirstPath.oth";
-        assertThatException().isThrownBy(() -> Differ.generate(firstPath, secondPath));
+        assertThatThrownBy(() -> Differ.generate(firstPath, secondPath))
+                .isInstanceOf(Exception.class)
+                .hasMessageContaining("'" + Paths.get(secondPath).toAbsolutePath().normalize()
+                        + "' has unknown filename extension.\nCheck it!");
     }
 
     @Test
-    public void differTestUncknownFormatBothPaths() {
+    public void differTestUnknownFormatBothPaths() {
         String firstPath = "./src/test/resources/fixtures/OTH-files/differTestUncknownFormatFirstPath.oth";
         String secondPath = "./src/test/resources/fixtures/OTH-files/differTestUncknownFormatFirstPath.oth";
-        assertThatException().isThrownBy(() -> Differ.generate(firstPath, secondPath));
+        assertThatThrownBy(() -> Differ.generate(firstPath, secondPath))
+                .isInstanceOf(Exception.class)
+                .hasMessageContaining("'" + Paths.get(firstPath).toAbsolutePath().normalize()
+                        + "' has unknown filename extension.\nCheck it!");
     }
     @Test
     public void differTestDifferentFormatFirst() {
         String firstPath = "./src/test/resources/fixtures/YAML-files/differTestFirstPath1.yml";
         String secondPath = "./src/test/resources/fixtures/JSON-files/differTestFirstPath1.json";
-        assertThatException().isThrownBy(() -> Differ.generate(firstPath, secondPath));
+        assertThatThrownBy(() -> Differ.generate(firstPath, secondPath))
+                .isInstanceOf(Exception.class)
+                .hasMessageContaining("Files has different filename extensions."
+                        + "\nEnter paths only with same filename extensions");
     }
 
     @Test
     public void differTestDifferentFormatSecond() {
         String firstPath = "./src/test/resources/fixtures/JSON-files/differTestFirstPath2.json";
         String secondPath = "./src/test/resources/fixtures/YAML-files/differTestFirstPath2.yml";
-        assertThatException().isThrownBy(() -> Differ.generate(firstPath, secondPath));
+        assertThatThrownBy(() -> Differ.generate(firstPath, secondPath))
+                .isInstanceOf(Exception.class)
+                .hasMessageContaining("Files has different filename extensions."
+                        + "\nEnter paths only with same filename extensions");
     }
 }
