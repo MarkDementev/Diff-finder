@@ -40,49 +40,130 @@ public class DifferTest {
     private String differTestBothEmptyPathsCorrectString = "\n{\n}";
 
     @Test
-    public void differTestFirst() throws Exception {
-        String firstPath = "./src/test/resources/fixtures/differTestFirstPath1.json";
-        String secondPath = "./src/test/resources/fixtures/differTestFirstPath2.json";
+    public void differTestFirstJSON() throws Exception {
+        String firstPath = "./src/test/resources/fixtures/JSON-files/differTestFirstPath1.json";
+        String secondPath = "./src/test/resources/fixtures/JSON-files/differTestFirstPath2.json";
         String result = Differ.generate(firstPath, secondPath);
         assertThat(result).isEqualTo(differTestFirstCorrectString);
     }
 
     @Test
-    public void differTestSecond() throws Exception {
-        String firstPath = "./src/test/resources/fixtures/differTestSecondPath1.json";
-        String secondPath = "./src/test/resources/fixtures/differTestSecondPath2.json";
+    public void differTestSecondJSON() throws Exception {
+        String firstPath = "./src/test/resources/fixtures/JSON-files/differTestSecondPath1.json";
+        String secondPath = "./src/test/resources/fixtures/JSON-files/differTestSecondPath2.json";
         String result = Differ.generate(firstPath, secondPath);
         assertThat(result).isEqualTo(differTestSecondCorrectString);
     }
 
     @Test
-    public void differTestFirstEmptyPath() throws Exception {
-        String firstPath = "./src/test/resources/fixtures/emptyFile.json";
-        String secondPath = "./src/test/resources/fixtures/differTestFirstPath1.json";
+    public void differTestFirstEmptyPathJSON() throws Exception {
+        String firstPath = "./src/test/resources/fixtures/JSON-files/emptyFile.json";
+        String secondPath = "./src/test/resources/fixtures/JSON-files/differTestFirstPath1.json";
         String result = Differ.generate(firstPath, secondPath);
         assertThat(result).isEqualTo(differTestFirstEmptyPathCorrectString);
     }
 
     @Test
-    public void differTestSecondEmptyPath() throws Exception {
-        String firstPath = "./src/test/resources/fixtures/differTestSecondPath1.json";
-        String secondPath = "./src/test/resources/fixtures/emptyFile.json";
+    public void differTestSecondEmptyPathJSON() throws Exception {
+        String firstPath = "./src/test/resources/fixtures/JSON-files/differTestSecondPath1.json";
+        String secondPath = "./src/test/resources/fixtures/JSON-files/emptyFile.json";
         String result = Differ.generate(firstPath, secondPath);
         assertThat(result).isEqualTo(differTestSecondEmptyPathCorrectString);
     }
 
     @Test
-    public void differTestBothEmptyPaths() throws Exception {
-        String firstPath = "./src/test/resources/fixtures/emptyFile.json";
-        String secondPath = "./src/test/resources/fixtures/emptyFile.json";
+    public void differTestBothEmptyPathsJSON() throws Exception {
+        String firstPath = "./src/test/resources/fixtures/JSON-files/emptyFile.json";
+        String secondPath = "./src/test/resources/fixtures/JSON-files/emptyFile.json";
         String result = Differ.generate(firstPath, secondPath);
         assertThat(result).isEqualTo(differTestBothEmptyPathsCorrectString);
     }
 
     @Test
-    public void differTestNoFile() {
-        String firstPath = "./src/test/resources/fixtures/this file is fantasy.json";
-        String secondPath = "./src/test/resources/fixtures/differTestFirstPath1.json";
+    public void differTestNoFileJSON() {
+        String firstPath = "./src/test/resources/fixtures/JSON-files/this file is fantasy.json";
+        String secondPath = "./src/test/resources/fixtures/JSON-files/differTestFirstPath1.json";
+        assertThatException().isThrownBy(() -> Differ.generate(firstPath, secondPath));
+    }
+
+    @Test
+    public void differTestFirstYAML() throws Exception {
+        String firstPath = "./src/test/resources/fixtures/YAML-files/differTestFirstPath1.yml";
+        String secondPath = "./src/test/resources/fixtures/YAML-files/differTestFirstPath2.yml";
+        String result = Differ.generate(firstPath, secondPath);
+        assertThat(result).isEqualTo(differTestFirstCorrectString);
+    }
+
+    @Test
+    public void differTestSecondYAML() throws Exception {
+        String firstPath = "./src/test/resources/fixtures/YAML-files/differTestSecondPath1.yml";
+        String secondPath = "./src/test/resources/fixtures/YAML-files/differTestSecondPath2.yml";
+        String result = Differ.generate(firstPath, secondPath);
+        assertThat(result).isEqualTo(differTestSecondCorrectString);
+    }
+
+    @Test
+    public void differTestFirstEmptyPathYAML() throws Exception {
+        String firstPath = "./src/test/resources/fixtures/YAML-files/emptyFile.yml";
+        String secondPath = "./src/test/resources/fixtures/YAML-files/differTestFirstPath1.yml";
+        String result = Differ.generate(firstPath, secondPath);
+        assertThat(result).isEqualTo(differTestFirstEmptyPathCorrectString);
+    }
+
+    @Test
+    public void differTestSecondEmptyPathYAML() throws Exception {
+        String firstPath = "./src/test/resources/fixtures/YAML-files/differTestSecondPath1.yml";
+        String secondPath = "./src/test/resources/fixtures/YAML-files/emptyFile.yml";
+        String result = Differ.generate(firstPath, secondPath);
+        assertThat(result).isEqualTo(differTestSecondEmptyPathCorrectString);
+    }
+
+    @Test
+    public void differTestBothEmptyPathsYAML() throws Exception {
+        String firstPath = "./src/test/resources/fixtures/YAML-files/emptyFile.yml";
+        String secondPath = "./src/test/resources/fixtures/YAML-files/emptyFile.yml";
+        String result = Differ.generate(firstPath, secondPath);
+        assertThat(result).isEqualTo(differTestBothEmptyPathsCorrectString);
+    }
+
+    @Test
+    public void differTestNoFileYAML() {
+        String firstPath = "./src/test/resources/fixtures/YAML-files/this file is fantasy.yml";
+        String secondPath = "./src/test/resources/fixtures/YAML-files/differTestFirstPath1.yml";
+        assertThatException().isThrownBy(() -> Differ.generate(firstPath, secondPath));
+    }
+
+    @Test
+    public void differTestUncknownFormatFirstPath() {
+        String firstPath = "./src/test/resources/fixtures/OTH-files/differTestUncknownFormatFirstPath.oth";
+        String secondPath = "./src/test/resources/fixtures/JSON-files/differTestFirstPath1.json";
+        assertThatException().isThrownBy(() -> Differ.generate(firstPath, secondPath));
+    }
+
+    @Test
+    public void differTestUncknownFormatSecondPath() {
+        String firstPath = "./src/test/resources/fixtures/YAML-files/emptyFile.yml";
+        String secondPath = "./src/test/resources/fixtures/OTH-files/differTestUncknownFormatFirstPath.oth";
+        assertThatException().isThrownBy(() -> Differ.generate(firstPath, secondPath));
+    }
+
+    @Test
+    public void differTestUncknownFormatBothPaths() {
+        String firstPath = "./src/test/resources/fixtures/OTH-files/differTestUncknownFormatFirstPath.oth";
+        String secondPath = "./src/test/resources/fixtures/OTH-files/differTestUncknownFormatFirstPath.oth";
+        assertThatException().isThrownBy(() -> Differ.generate(firstPath, secondPath));
+    }
+    @Test
+    public void differTestDifferentFormatFirst() {
+        String firstPath = "./src/test/resources/fixtures/YAML-files/differTestFirstPath1.yml";
+        String secondPath = "./src/test/resources/fixtures/JSON-files/differTestFirstPath1.json";
+        assertThatException().isThrownBy(() -> Differ.generate(firstPath, secondPath));
+    }
+
+    @Test
+    public void differTestDifferentFormatSecond() {
+        String firstPath = "./src/test/resources/fixtures/JSON-files/differTestFirstPath2.json";
+        String secondPath = "./src/test/resources/fixtures/YAML-files/differTestFirstPath2.yml";
         assertThatException().isThrownBy(() -> Differ.generate(firstPath, secondPath));
     }
 }
