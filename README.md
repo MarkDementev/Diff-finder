@@ -7,4 +7,4 @@
 [![Actions Status](https://github.com/MarkDementev/java-project-61/workflows/hexlet-check/badge.svg)](https://github.com/MarkDementev/java-project-61/actions)
 
 ### Programme work session demo:
-https://asciinema.org/a/JmkKrJDOIwDfUgrhQt9YdNSfV
+[https://asciinema.org/a/JmkKrJDOIwDfUgrhQt9YdNSfV](https://asciinema.org/a/hxWibXIqibYqeH5pfP9iuvlvH)
