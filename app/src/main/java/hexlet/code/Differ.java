@@ -1,8 +1,6 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,23 +9,49 @@ import java.util.TreeMap;
 
 public class Differ {
     private static final String[] KEY_TYPES = {"unchanged", "deleted", "updated", "added"};
+    public static final String[] FILE_EXTENSIONS = {".json", ".yml", ".yaml"};
+    public static final String DIFFERENT_EXTENSIONS_ERROR = "Files has different filename extensions."
+            + "\nEnter paths only with same filename extensions!";
+    public static final String UNKNOWN_EXTENSION_ERROR = "There is unknown filename extension.\nCheck input files!";
 
     public static String generate(String firstFilePath, String secondFilePath) throws Exception {
-        String firstFileToString = pathCheckThenToString(firstFilePath);
-        String secondFileToString = pathCheckThenToString(secondFilePath);
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> firstFileParsedMap = mapper.readValue(firstFileToString, new TypeReference<>() { });
-        Map<String, Object> secondFileParsedMap = mapper.readValue(secondFileToString, new TypeReference<>() { });
+        String filesExtension = findBothFilesExtension(firstFilePath, secondFilePath);
+        String firstFileAbsolutePath = isFileExistThenToAbsolutePath(firstFilePath);
+        String secondFileAbsolutePath = isFileExistThenToAbsolutePath(secondFilePath);
+        Map<String, Object> firstFileParsedMap = Parser.parseToMap(filesExtension, firstFileAbsolutePath);
+        Map<String, Object> secondFileParsedMap = Parser.parseToMap(filesExtension, secondFileAbsolutePath);
         Map<String, String> keyTypes = formKeyTypesMap(firstFileParsedMap, secondFileParsedMap);
 
         return formOutputString(keyTypes, firstFileParsedMap, secondFileParsedMap);
     }
 
-    private static String pathCheckThenToString(String filePath) throws Exception {
+    private static String findBothFilesExtension(String firstFilePath, String secondFilePath) throws Exception {
+        String firstFileExtension = isCorrectExtension(firstFilePath);
+        String secondFileExtension = isCorrectExtension(secondFilePath);
+
+        if (!firstFileExtension.equals(secondFileExtension)) {
+            throw new Exception(DIFFERENT_EXTENSIONS_ERROR);
+        }
+
+        return firstFilePath.equals(FILE_EXTENSIONS[0]) ? FILE_EXTENSIONS[0] : FILE_EXTENSIONS[1];
+    }
+
+    private static String isCorrectExtension(String filePath) throws Exception {
+        String checkedFilePath = filePath.substring(filePath.lastIndexOf('.'));
+
+        if (checkedFilePath.equals(FILE_EXTENSIONS[1]) || checkedFilePath.equals(FILE_EXTENSIONS[2])) {
+            return FILE_EXTENSIONS[1];
+        } else if (checkedFilePath.equals(FILE_EXTENSIONS[0])) {
+            return FILE_EXTENSIONS[0];
+        }
+        throw new Exception(UNKNOWN_EXTENSION_ERROR);
+    }
+
+    private static String isFileExistThenToAbsolutePath(String filePath) throws IOException {
         Path absoluteFilePath = Paths.get(filePath).toAbsolutePath().normalize();
 
         if (!Files.exists(absoluteFilePath)) {
-            throw new Exception("'" + absoluteFilePath + "' does not exist.\nCheck it!");
+            throw new IOException("'" + absoluteFilePath + "' does not exist.\nCheck it!");
         }
         return Files.readString(absoluteFilePath);
     }
