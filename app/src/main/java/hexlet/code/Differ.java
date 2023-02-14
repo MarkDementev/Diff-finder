@@ -22,7 +22,7 @@ public class Differ {
         Map<String, Object> secondFileParsedMap = Parser.parseToMap(filesExtension, secondFileAbsolutePath);
         Map<String, String> keyDifferTypes = formKeyDifferTypesMap(firstFileParsedMap, secondFileParsedMap);
 
-        return formOutputString(keyDifferTypes, firstFileParsedMap, secondFileParsedMap);
+        return formResultString(keyDifferTypes, firstFileParsedMap, secondFileParsedMap);
     }
 
     private static String findBothFilesExtension(String firstFilePath, String secondFilePath) throws Exception {
@@ -103,7 +103,7 @@ public class Differ {
         return keyDifferTypes;
     }
 
-    private static String formOutputString(Map<String, String> keyDifferTypes,
+    private static String formResultString(Map<String, String> keyDifferTypes,
                                            Map<String, Object> firstFileParsedMap,
                                            Map<String, Object> secondFileParsedMap) {
         StringBuilder treeMapToOutputString = new StringBuilder("\n{\n");
@@ -122,7 +122,8 @@ public class Differ {
                 } else if (elementValue.equals(KEY_TYPES[2])) {
                     treeMapToOutputString
                             .append(" - ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey))
-                            .append("\n + ").append(elementKey).append(": ").append(secondFileParsedMap.get(elementKey));
+                            .append("\n + ").append(elementKey).append(": ")
+                            .append(secondFileParsedMap.get(elementKey));
                 } else if (elementValue.equals(KEY_TYPES[3])) {
                     treeMapToOutputString
                             .append(" + ").append(elementKey).append(": ").append(secondFileParsedMap.get(elementKey));
