@@ -20,9 +20,9 @@ public class Differ {
         String secondFileAbsolutePath = isFileExistThenToAbsolutePath(secondFilePath);
         Map<String, Object> firstFileParsedMap = Parser.parseToMap(filesExtension, firstFileAbsolutePath);
         Map<String, Object> secondFileParsedMap = Parser.parseToMap(filesExtension, secondFileAbsolutePath);
-        Map<String, String> keyTypes = formKeyTypesMap(firstFileParsedMap, secondFileParsedMap);
+        Map<String, String> keyDifferTypes = formKeyDifferTypesMap(firstFileParsedMap, secondFileParsedMap);
 
-        return formOutputString(keyTypes, firstFileParsedMap, secondFileParsedMap);
+        return formOutputString(keyDifferTypes, firstFileParsedMap, secondFileParsedMap);
     }
 
     private static String findBothFilesExtension(String firstFilePath, String secondFilePath) throws Exception {
@@ -55,57 +55,80 @@ public class Differ {
         return Files.readString(absoluteFilePath);
     }
 
-    private static Map<String, String> formKeyTypesMap(Map<String, Object> firstFileParsedMap,
+    private static Map<String, String> formKeyDifferTypesMap(Map<String, Object> firstFileParsedMap,
                                                        Map<String, Object> secondFileParsedMap) {
-        Map<String, String> keyTypes = new TreeMap<>();
+        Map<String, String> keyDifferTypes = new TreeMap<>();
+
+        if (firstFileParsedMap == null && secondFileParsedMap == null) {
+            return keyDifferTypes;
+        } else if (firstFileParsedMap == null) {
+            for (Map.Entry<String, Object> element : secondFileParsedMap.entrySet()) {
+                keyDifferTypes.put(element.getKey(), KEY_TYPES[3]);
+            }
+            return keyDifferTypes;
+        } else if (secondFileParsedMap == null) {
+            for (Map.Entry<String, Object> element : firstFileParsedMap.entrySet()) {
+                keyDifferTypes.put(element.getKey(), KEY_TYPES[1]);
+            }
+            return keyDifferTypes;
+        }
 
         for (Map.Entry<String, Object> firstMapElement : firstFileParsedMap.entrySet()) {
             String firstMapElementKey = firstMapElement.getKey();
             Object firstMapElementValue = firstMapElement.getValue();
+            Object secondMapValueByFirstMapElementKey;
+
+            if (secondFileParsedMap.get(firstMapElementKey) == null) {
+                secondMapValueByFirstMapElementKey = "null";
+            } else {
+                secondMapValueByFirstMapElementKey = secondFileParsedMap.get(firstMapElementKey);
+            }
 
             if (secondFileParsedMap.containsKey(firstMapElementKey)
-                    && secondFileParsedMap.get(firstMapElementKey).equals(firstMapElementValue)) {
-                keyTypes.put(firstMapElementKey, KEY_TYPES[0]);
+                    && secondMapValueByFirstMapElementKey.equals(firstMapElementValue)) {
+                keyDifferTypes.put(firstMapElementKey, KEY_TYPES[0]);
             } else if (!secondFileParsedMap.containsKey(firstMapElementKey)) {
-                keyTypes.put(firstMapElementKey, KEY_TYPES[1]);
+                keyDifferTypes.put(firstMapElementKey, KEY_TYPES[1]);
             } else if (secondFileParsedMap.containsKey(firstMapElementKey)
-                    && !secondFileParsedMap.get(firstMapElementKey).equals(firstMapElementValue)) {
-                keyTypes.put(firstMapElementKey, KEY_TYPES[2]);
+                    && !secondMapValueByFirstMapElementKey.equals(firstMapElementValue)) {
+                keyDifferTypes.put(firstMapElementKey, KEY_TYPES[2]);
             }
         }
 
         for (String secondMapElementKey : secondFileParsedMap.keySet()) {
             if (!firstFileParsedMap.containsKey(secondMapElementKey)) {
-                keyTypes.put(secondMapElementKey, KEY_TYPES[3]);
+                keyDifferTypes.put(secondMapElementKey, KEY_TYPES[3]);
             }
         }
-        return keyTypes;
+        return keyDifferTypes;
     }
 
-    private static String formOutputString(Map<String, String> keyTypes, Map<String, Object> firstFileParsedMap,
+    private static String formOutputString(Map<String, String> keyDifferTypes,
+                                           Map<String, Object> firstFileParsedMap,
                                            Map<String, Object> secondFileParsedMap) {
         StringBuilder treeMapToOutputString = new StringBuilder("\n{\n");
 
-        for (Map.Entry<String, String> element : keyTypes.entrySet()) {
-            String elementKey = element.getKey();
-            Object elementValue = element.getValue();
+        if (keyDifferTypes.size() != 0) {
+            for (Map.Entry<String, String> element : keyDifferTypes.entrySet()) {
+                String elementKey = element.getKey();
+                String elementValue = element.getValue();
 
-            if (elementValue.equals(KEY_TYPES[0])) {
-                treeMapToOutputString
-                        .append("   ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey));
-            } else if (elementValue.equals(KEY_TYPES[1])) {
-                treeMapToOutputString
-                        .append(" - ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey));
-            } else if (elementValue.equals(KEY_TYPES[2])) {
-                treeMapToOutputString
-                        .append(" - ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey))
-                        .append("\n + ").append(elementKey).append(": ").append(secondFileParsedMap.get(elementKey));
-            } else if (elementValue.equals(KEY_TYPES[3])) {
-                treeMapToOutputString
-                        .append(" + ").append(elementKey).append(": ").append(secondFileParsedMap.get(elementKey));
+                if (elementValue.equals(KEY_TYPES[0])) {
+                    treeMapToOutputString
+                            .append("   ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey));
+                } else if (elementValue.equals(KEY_TYPES[1])) {
+                    treeMapToOutputString
+                            .append(" - ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey));
+                } else if (elementValue.equals(KEY_TYPES[2])) {
+                    treeMapToOutputString
+                            .append(" - ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey))
+                            .append("\n + ").append(elementKey).append(": ").append(secondFileParsedMap.get(elementKey));
+                } else if (elementValue.equals(KEY_TYPES[3])) {
+                    treeMapToOutputString
+                            .append(" + ").append(elementKey).append(": ").append(secondFileParsedMap.get(elementKey));
+                }
+                treeMapToOutputString.append("\n");
             }
-
-            treeMapToOutputString.append("\n");
         }
         return treeMapToOutputString.append("}").toString();
     }
