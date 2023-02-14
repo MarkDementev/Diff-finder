@@ -8,11 +8,11 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Differ {
-    private static final String[] KEY_TYPES = {"unchanged", "deleted", "updated", "added"};
-    public static final String[] FILE_EXTENSIONS = {".json", ".yml", ".yaml"};
     public static final String DIFFERENT_EXTENSIONS_ERROR = "Files has different filename extensions."
             + "\nEnter paths only with same filename extensions!";
     public static final String UNKNOWN_EXTENSION_ERROR = "There is unknown filename extension.\nCheck input files!";
+    private static final String[] KEY_TYPES = {"unchanged", "deleted", "updated", "added"};
+    private static final String[] FILE_EXTENSIONS = {".json", ".yml", ".yaml"};
 
     public static String generate(String firstFilePath, String secondFilePath) throws Exception {
         String filesExtension = findBothFilesExtension(firstFilePath, secondFilePath);
@@ -32,8 +32,7 @@ public class Differ {
         if (!firstFileExtension.equals(secondFileExtension)) {
             throw new Exception(DIFFERENT_EXTENSIONS_ERROR);
         }
-
-        return firstFilePath.equals(FILE_EXTENSIONS[0]) ? FILE_EXTENSIONS[0] : FILE_EXTENSIONS[1];
+        return firstFileExtension;
     }
 
     private static String isCorrectExtension(String filePath) throws Exception {

@@ -1,10 +1,10 @@
 package hexlet.code;
 
+import java.util.concurrent.Callable;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
-import java.util.concurrent.Callable;
 
 //Темур! Стоит ли отправить текст, выводимый @Command, @Option, @Parameters
 //в String константы класса? Это ведь элементы фреймворка picocli, а не исходная Java

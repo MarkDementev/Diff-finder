@@ -6,7 +6,7 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 public class Parser {
     public static Map<String, Object> parseToMap(String filesExtension, String filePath)
@@ -25,9 +25,7 @@ public class Parser {
     }
 
     public static Map<String, Object> parseFromYAML(String filePath) throws JsonProcessingException {
-        ObjectMapper mapper = new YAMLMapper();
-        Map<String, Object> yAMLMap = mapper.readValue(filePath, new TypeReference<>() { });
-
-        return yAMLMap == null ? new HashMap<>() : yAMLMap;
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        return mapper.readValue(filePath, new TypeReference<>() { });
     }
 }
