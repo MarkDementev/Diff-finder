@@ -7,7 +7,49 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class DifferTest {
-    private String differTestFirstCorrectString = "\n{\n"
+    private static final String FIRST_JSON_PATH_1 =
+            "./src/test/resources/fixtures/JSON-files/differTestFirstPath1.json";
+    private static final String FIRST_JSON_PATH_2 =
+            "./src/test/resources/fixtures/JSON-files/differTestFirstPath2.json";
+    private static final String SECOND_JSON_PATH_1 =
+            "./src/test/resources/fixtures/JSON-files/differTestSecondPath1.json";
+    private static final String SECOND_JSON_PATH_2 =
+            "./src/test/resources/fixtures/JSON-files/differTestSecondPath2.json";
+    private static final String EMPTY_JSON_PATH =
+            "./src/test/resources/fixtures/JSON-files/emptyFile.json";
+    private static final String FILE_DOESNT_EXIST_JSON =
+            "./src/test/resources/fixtures/JSON-files/this file is fantasy.json";
+    private static final String FIRST_YAML_PATH_1 =
+            "./src/test/resources/fixtures.YAML-files/differTestFirstPath1.yml";
+    private static final String FIRST_YAML_PATH_2 =
+            "./src/test/resources/fixtures.YAML-files/differTestFirstPath2.yml";
+    private static final String SECOND_YAML_PATH_1 =
+            "./src/test/resources/fixtures.YAML-files/differTestSecondPath1.yaml";
+    private static final String SECOND_YAML_PATH_2 =
+            "./src/test/resources/fixtures.YAML-files/differTestSecondPath2.yaml";
+    private static final String EMPTY_YAML_PATH =
+            "./src/test/resources/fixtures.YAML-files/emptyFile.yml";
+    private static final String FILE_DOESNT_EXIST_YAML =
+            "./src/test/resources/fixtures.YAML-files/this file is fantasy.yml";
+    private static final String UNKNOWN_FORMAT_PATH =
+            "./src/test/resources/fixtures.OTH-files/differTestUnknownFormatFirstPath.oth";
+    private static final String FIRST_INNER_JSON_PATH_1 =
+            "./src/test/resources/fixtures/JSON-files/differTestFirstInnerJSONPath1.json";
+    private static final String FIRST_INNER_JSON_PATH_2 =
+            "./src/test/resources/fixtures/JSON-files/differTestFirstInnerJSONPath2.json";
+    private static final String SECOND_INNER_JSON_PATH_1 =
+            "./src/test/resources/fixtures/JSON-files/differTestSecondInnerJSONPath1.json";
+    private static final String SECOND_INNER_JSON_PATH_2 =
+            "./src/test/resources/fixtures/JSON-files/differTestSecondInnerJSONPath2.json";
+    private static final String FIRST_INNER_YAML_PATH_1 =
+            "./src/test/resources/fixtures.YAML-files/differTestFirstInnerYAMLPath1.yml";
+    private static final String FIRST_INNER_YAML_PATH_2 =
+            "./src/test/resources/fixtures.YAML-files/differTestFirstInnerYAMLPath2.yml";
+    private static final String SECOND_INNER_YAML_PATH_1 =
+            "./src/test/resources/fixtures.YAML-files/differTestSecondInnerYAMLPath1.yaml";
+    private static final String SECOND_INNER_YAML_PATH_2 =
+            "./src/test/resources/fixtures.YAML-files/differTestSecondInnerYAMLPath2.yaml";
+    private static final String FIRST_CORRECT_STRING = "\n{\n"
             + " - follow: false\n"
             + "   host: hexlet.io\n"
             + " - proxy: 123.234.53.22\n"
@@ -15,8 +57,7 @@ public class DifferTest {
             + " + timeout: 20\n"
             + " + verbose: true\n"
             + "}";
-
-    private String differTestSecondCorrectString = "\n{\n"
+    private static final String SECOND_CORRECT_STRING = "\n{\n"
             + "   A: A\n"
             + "   B: B\n"
             + " - C: true\n"
@@ -24,24 +65,20 @@ public class DifferTest {
             + " + D: C\n"
             + " + E: true\n"
             + "}";
-
-    private String differTestFirstEmptyPathCorrectString = "\n{\n"
+    private static final String FIRST_EMPTY_PATH_CORRECT_STRING = "\n{\n"
             + " + follow: false\n"
             + " + host: hexlet.io\n"
             + " + proxy: 123.234.53.22\n"
             + " + timeout: 50\n"
             + "}";
-
-    private String differTestSecondEmptyPathCorrectString = "\n{\n"
+    private static final String SECOND_EMPTY_PATH_CORRECT_STRING = "\n{\n"
             + " - A: A\n"
             + " - B: B\n"
             + " - C: true\n"
             + " - D: 1\n"
             + "}";
-
-    private String differTestBothEmptyPathsCorrectString = "\n{\n}";
-
-    private String differTestFirstInnerCorrectString = "\n{\n"
+    private static final String BOTH_EMPTY_PATHS_CORRECT_STRING = "\n{\n}";
+    private static final String FIRST_INNER_CORRECT_STRING = "\n{\n"
             + "   chars1: [a, b, c]\n"
             + " - chars2: [d, e, f]\n"
             + " + chars2: false\n"
@@ -66,8 +103,7 @@ public class DifferTest {
             + " - setting3: true\n"
             + " + setting3: none\n"
             + "}";
-
-    private String differTestSecondInnerCorrectString = "\n{\n"
+    private static final String SECOND_INNER_CORRECT_STRING = "\n{\n"
             + " - A: {A=value, B=true}\n"
             + " - B: [1, 2]\n"
             + " + B: [2, 2]\n"
@@ -77,178 +113,136 @@ public class DifferTest {
             + "}";
 
     @Test
-    public void differTestFirstJSON() throws Exception {
-        String firstPath = "./src/test/resources/fixtures/JSON-files/differTestFirstPath1.json";
-        String secondPath = "./src/test/resources/fixtures/JSON-files/differTestFirstPath2.json";
-        String result = Differ.generate(firstPath, secondPath);
-        assertThat(result).isEqualTo(differTestFirstCorrectString);
+    public void testFirstJSON() throws Exception {
+        String result = Differ.generate(FIRST_JSON_PATH_1, FIRST_JSON_PATH_2);
+        assertThat(result).isEqualTo(FIRST_CORRECT_STRING);
     }
 
     @Test
-    public void differTestSecondJSON() throws Exception {
-        String firstPath = "./src/test/resources/fixtures/JSON-files/differTestSecondPath1.json";
-        String secondPath = "./src/test/resources/fixtures/JSON-files/differTestSecondPath2.json";
-        String result = Differ.generate(firstPath, secondPath);
-        assertThat(result).isEqualTo(differTestSecondCorrectString);
+    public void testSecondJSON() throws Exception {
+        String result = Differ.generate(SECOND_JSON_PATH_1, SECOND_JSON_PATH_2);
+        assertThat(result).isEqualTo(SECOND_CORRECT_STRING);
     }
 
     @Test
-    public void differTestFirstEmptyPathJSON() throws Exception {
-        String firstPath = "./src/test/resources/fixtures/JSON-files/emptyFile.json";
-        String secondPath = "./src/test/resources/fixtures/JSON-files/differTestFirstPath1.json";
-        String result = Differ.generate(firstPath, secondPath);
-        assertThat(result).isEqualTo(differTestFirstEmptyPathCorrectString);
+    public void testEmptyPathJSON() throws Exception {
+        String result = Differ.generate(EMPTY_JSON_PATH, FIRST_JSON_PATH_1);
+        assertThat(result).isEqualTo(FIRST_EMPTY_PATH_CORRECT_STRING);
     }
 
     @Test
-    public void differTestSecondEmptyPathJSON() throws Exception {
-        String firstPath = "./src/test/resources/fixtures/JSON-files/differTestSecondPath1.json";
-        String secondPath = "./src/test/resources/fixtures/JSON-files/emptyFile.json";
-        String result = Differ.generate(firstPath, secondPath);
-        assertThat(result).isEqualTo(differTestSecondEmptyPathCorrectString);
+    public void testSecondEmptyPathJSON() throws Exception {
+        String result = Differ.generate(SECOND_JSON_PATH_1, EMPTY_JSON_PATH);
+        assertThat(result).isEqualTo(SECOND_EMPTY_PATH_CORRECT_STRING);
     }
 
     @Test
-    public void differTestBothEmptyPathsJSON() throws Exception {
-        String firstPath = "./src/test/resources/fixtures/JSON-files/emptyFile.json";
-        String secondPath = "./src/test/resources/fixtures/JSON-files/emptyFile.json";
-        String result = Differ.generate(firstPath, secondPath);
-        assertThat(result).isEqualTo(differTestBothEmptyPathsCorrectString);
+    public void testBothEmptyPathsJSON() throws Exception {
+        String result = Differ.generate(EMPTY_JSON_PATH, EMPTY_JSON_PATH);
+        assertThat(result).isEqualTo(BOTH_EMPTY_PATHS_CORRECT_STRING);
     }
 
     @Test
-    public void differTestNoFileJSON() {
-        String firstPath = "./src/test/resources/fixtures/JSON-files/this file is fantasy.json";
-        String secondPath = "./src/test/resources/fixtures/JSON-files/differTestFirstPath1.json";
-        assertThatThrownBy(() -> Differ.generate(firstPath, secondPath))
+    public void testNoFileJSON() {
+        assertThatThrownBy(() -> Differ.generate(FILE_DOESNT_EXIST_JSON, FIRST_JSON_PATH_1))
                 .isInstanceOf(IOException.class)
-                .hasMessageContaining("'" + Paths.get(firstPath).toAbsolutePath().normalize()
+                .hasMessageContaining("'" + Paths.get(FILE_DOESNT_EXIST_JSON).toAbsolutePath().normalize()
                         + "' does not exist.\nCheck it!");
     }
 
     @Test
-    public void differTestFirstYAML() throws Exception {
-        String firstPath = "./src/test/resources/fixtures.YAML-files/differTestFirstPath1.yml";
-        String secondPath = "./src/test/resources/fixtures.YAML-files/differTestFirstPath2.yml";
-        String result = Differ.generate(firstPath, secondPath);
-        assertThat(result).isEqualTo(differTestFirstCorrectString);
+    public void testFirstYAML() throws Exception {
+        String result = Differ.generate(FIRST_YAML_PATH_1, FIRST_YAML_PATH_2);
+        assertThat(result).isEqualTo(FIRST_CORRECT_STRING);
     }
 
     @Test
-    public void differTestSecondYAML() throws Exception {
-        String firstPath = "./src/test/resources/fixtures.YAML-files/differTestSecondPath1.yaml";
-        String secondPath = "./src/test/resources/fixtures.YAML-files/differTestSecondPath2.yaml";
-        String result = Differ.generate(firstPath, secondPath);
-        assertThat(result).isEqualTo(differTestSecondCorrectString);
+    public void testSecondYAML() throws Exception {
+        String result = Differ.generate(SECOND_YAML_PATH_1, SECOND_YAML_PATH_2);
+        assertThat(result).isEqualTo(SECOND_CORRECT_STRING);
     }
 
     @Test
-    public void differTestFirstEmptyPathYAML() throws Exception {
-        String firstPath = "./src/test/resources/fixtures.YAML-files/emptyFile.yml";
-        String secondPath = "./src/test/resources/fixtures.YAML-files/differTestFirstPath1.yml";
-        String result = Differ.generate(firstPath, secondPath);
-        assertThat(result).isEqualTo(differTestFirstEmptyPathCorrectString);
+    public void testFirstEmptyPathYAML() throws Exception {
+        String result = Differ.generate(EMPTY_YAML_PATH, FIRST_YAML_PATH_1);
+        assertThat(result).isEqualTo(FIRST_EMPTY_PATH_CORRECT_STRING);
     }
 
     @Test
-    public void differTestSecondEmptyPathYAML() throws Exception {
-        String firstPath = "./src/test/resources/fixtures.YAML-files/differTestSecondPath1.yaml";
-        String secondPath = "./src/test/resources/fixtures.YAML-files/emptyFile.yml";
-        String result = Differ.generate(firstPath, secondPath);
-        assertThat(result).isEqualTo(differTestSecondEmptyPathCorrectString);
+    public void testSecondEmptyPathYAML() throws Exception {
+        String result = Differ.generate(SECOND_YAML_PATH_1, EMPTY_YAML_PATH);
+        assertThat(result).isEqualTo(SECOND_EMPTY_PATH_CORRECT_STRING);
     }
 
     @Test
-    public void differTestBothEmptyPathsYAML() throws Exception {
-        String firstPath = "./src/test/resources/fixtures.YAML-files/emptyFile.yml";
-        String secondPath = "./src/test/resources/fixtures.YAML-files/emptyFile.yml";
-        String result = Differ.generate(firstPath, secondPath);
-        assertThat(result).isEqualTo(differTestBothEmptyPathsCorrectString);
+    public void testBothEmptyPathsYAML() throws Exception {
+        String result = Differ.generate(EMPTY_YAML_PATH, EMPTY_YAML_PATH);
+        assertThat(result).isEqualTo(BOTH_EMPTY_PATHS_CORRECT_STRING);
     }
 
     @Test
-    public void differTestNoFileYAML() {
-        String firstPath = "./src/test/resources/fixtures.YAML-files/this file is fantasy.yml";
-        String secondPath = "./src/test/resources/fixtures.YAML-files/differTestFirstPath1.yml";
-        assertThatThrownBy(() -> Differ.generate(firstPath, secondPath))
+    public void testNoFileYAML() {
+        assertThatThrownBy(() -> Differ.generate(FILE_DOESNT_EXIST_YAML, FIRST_YAML_PATH_1))
                 .isInstanceOf(IOException.class)
-                .hasMessageContaining("'" + Paths.get(firstPath).toAbsolutePath().normalize()
+                .hasMessageContaining("'" + Paths.get(FILE_DOESNT_EXIST_YAML).toAbsolutePath().normalize()
                         + "' does not exist.\nCheck it!");
     }
 
     @Test
-    public void differTestUnknownFormatFirstPath() {
-        String firstPath = "./src/test/resources/fixtures.OTH-files/differTestUnknownFormatFirstPath.oth";
-        String secondPath = "./src/test/resources/fixtures/JSON-files/differTestFirstPath1.json";
-        assertThatThrownBy(() -> Differ.generate(firstPath, secondPath))
+    public void testUnknownFormatFirstPath() {
+        assertThatThrownBy(() -> Differ.generate(UNKNOWN_FORMAT_PATH, FIRST_JSON_PATH_1))
                 .isInstanceOf(Exception.class)
                 .hasMessageContaining(Differ.UNKNOWN_EXTENSION_ERROR);
     }
 
     @Test
-    public void differTestUnknownFormatSecondPath() {
-        String firstPath = "./src/test/resources/fixtures.YAML-files/emptyFile.yml";
-        String secondPath = "./src/test/resources/fixtures.OTH-files/differTestUnknownFormatFirstPath.oth";
-        assertThatThrownBy(() -> Differ.generate(firstPath, secondPath))
+    public void testUnknownFormatSecondPath() {
+        assertThatThrownBy(() -> Differ.generate(EMPTY_YAML_PATH, UNKNOWN_FORMAT_PATH))
                 .isInstanceOf(Exception.class)
                 .hasMessageContaining(Differ.UNKNOWN_EXTENSION_ERROR);
     }
 
     @Test
-    public void differTestUnknownFormatBothPaths() {
-        String firstPath = "./src/test/resources/fixtures.OTH-files/differTestUnknownFormatFirstPath.oth";
-        String secondPath = "./src/test/resources/fixtures.OTH-files/differTestUnknownFormatFirstPath.oth";
-        assertThatThrownBy(() -> Differ.generate(firstPath, secondPath))
+    public void testUnknownFormatBothPaths() {
+        assertThatThrownBy(() -> Differ.generate(UNKNOWN_FORMAT_PATH, UNKNOWN_FORMAT_PATH))
                 .isInstanceOf(Exception.class)
                 .hasMessageContaining(Differ.UNKNOWN_EXTENSION_ERROR);
     }
     @Test
-    public void differTestDifferentFormatFirst() {
-        String firstPath = "./src/test/resources/fixtures.YAML-files/differTestFirstPath1.yml";
-        String secondPath = "./src/test/resources/fixtures/JSON-files/differTestFirstPath1.json";
-        assertThatThrownBy(() -> Differ.generate(firstPath, secondPath))
+    public void testDifferentFormatFirst() {
+        assertThatThrownBy(() -> Differ.generate(FIRST_YAML_PATH_1, FIRST_JSON_PATH_1))
                 .isInstanceOf(Exception.class)
                 .hasMessageContaining(Differ.DIFFERENT_EXTENSIONS_ERROR);
     }
 
     @Test
-    public void differTestDifferentFormatSecond() {
-        String firstPath = "./src/test/resources/fixtures/JSON-files/differTestFirstPath2.json";
-        String secondPath = "./src/test/resources/fixtures.YAML-files/differTestFirstPath2.yml";
-        assertThatThrownBy(() -> Differ.generate(firstPath, secondPath))
+    public void testDifferentFormatSecond() {
+        assertThatThrownBy(() -> Differ.generate(FIRST_JSON_PATH_2, FIRST_YAML_PATH_2))
                 .isInstanceOf(Exception.class)
                 .hasMessageContaining(Differ.DIFFERENT_EXTENSIONS_ERROR);
     }
 
     @Test
-    public void differTestFirstInnerJSON() throws Exception {
-        String firstPath = "./src/test/resources/fixtures/JSON-files/differTestFirstInnerJSONPath1.json";
-        String secondPath = "./src/test/resources/fixtures/JSON-files/differTestFirstInnerJSONPath2.json";
-        String result = Differ.generate(firstPath, secondPath);
-        assertThat(result).isEqualTo(differTestFirstInnerCorrectString);
+    public void testFirstInnerJSON() throws Exception {
+        String result = Differ.generate(FIRST_INNER_JSON_PATH_1, FIRST_INNER_JSON_PATH_2);
+        assertThat(result).isEqualTo(FIRST_INNER_CORRECT_STRING);
     }
 
     @Test
-    public void differTestSecondInnerJSON() throws Exception {
-        String firstPath = "./src/test/resources/fixtures/JSON-files/differTestSecondInnerJSONPath1.json";
-        String secondPath = "./src/test/resources/fixtures/JSON-files/differTestSecondInnerJSONPath2.json";
-        String result = Differ.generate(firstPath, secondPath);
-        assertThat(result).isEqualTo(differTestSecondInnerCorrectString);
+    public void testSecondInnerJSON() throws Exception {
+        String result = Differ.generate(SECOND_INNER_JSON_PATH_1, SECOND_INNER_JSON_PATH_2);
+        assertThat(result).isEqualTo(SECOND_INNER_CORRECT_STRING);
     }
-//
-//    @Test
-//    public void differTestFirstInnerYAML() throws Exception {
-//        String firstPath = "./src/test/resources/fixtures/JSON-files/differTestFirstInnerYAMLPath1.json";
-//        String secondPath = "./src/test/resources/fixtures/JSON-files/differTestFirstInnerYAMLPath2.json";
-//        String result = Differ.generate(firstPath, secondPath);
-//        assertThat(result).isEqualTo(differTestFirstInnerCorrectString);
-//    }
-//
-//    @Test
-//    public void differTestSecondInnerYAML() throws Exception {
-//        String firstPath = "./src/test/resources/fixtures/JSON-files/differTestSecondInnerYAMLPath1.json";
-//        String secondPath = "./src/test/resources/fixtures/JSON-files/differTestSecondInnerYAMLPath2.json";
-//        String result = Differ.generate(firstPath, secondPath);
-//        assertThat(result).isEqualTo(differTestSecondInnerCorrectString);
-//    }
+
+    @Test
+    public void testFirstInnerYAML() throws Exception {
+        String result = Differ.generate(FIRST_INNER_YAML_PATH_1, FIRST_INNER_YAML_PATH_2);
+        assertThat(result).isEqualTo(FIRST_INNER_CORRECT_STRING);
+    }
+
+    @Test
+    public void testSecondInnerYAML() throws Exception {
+        String result = Differ.generate(SECOND_INNER_YAML_PATH_1, SECOND_INNER_YAML_PATH_2);
+        assertThat(result).isEqualTo(SECOND_INNER_CORRECT_STRING);
+    }
 }
