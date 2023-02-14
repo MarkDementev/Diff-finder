@@ -41,6 +41,41 @@ public class DifferTest {
 
     private String differTestBothEmptyPathsCorrectString = "\n{\n}";
 
+    private String differTestFirstInnerCorrectString = "\n{\n"
+            + "   chars1: [a, b, c]\n"
+            + " - chars2: [d, e, f]\n"
+            + " + chars2: false\n"
+            + " - checked: false\n"
+            + " + checked: true\n"
+            + " - default: null\n"
+            + " + default: [value1, value2]\n"
+            + " - id: 45\n"
+            + " + id: null\n"
+            + " - key1: value1\n"
+            + " + key2: value2\n"
+            + "   numbers1: [1, 2, 3, 4]\n"
+            + " - numbers2: [2, 3, 4, 5]\n"
+            + " + numbers2: [22, 33, 44, 55]\n"
+            + " - numbers3: [3, 4, 5]\n"
+            + " + numbers4: [4, 5, 6]\n"
+            + " + obj1: {nestedKey=value, isNested=true}\n"
+            + " - setting1: Some value\n"
+            + " + setting1: Another value\n"
+            + " - setting2: 200\n"
+            + " + setting2: 300\n"
+            + " - setting3: true\n"
+            + " + setting3: none\n"
+            + "}";
+
+    private String differTestSecondInnerCorrectString = "\n{\n"
+            + " - A: {A=value, B=true}\n"
+            + " - B: [1, 2]\n"
+            + " + B: [2, 2]\n"
+            + "   C: {A=123, B=false}\n"
+            + "   D: [value1, value2]\n"
+            + " + E: [true, false]\n"
+            + "}";
+
     @Test
     public void differTestFirstJSON() throws Exception {
         String firstPath = "./src/test/resources/fixtures/JSON-files/differTestFirstPath1.json";
@@ -184,4 +219,36 @@ public class DifferTest {
                 .isInstanceOf(Exception.class)
                 .hasMessageContaining(Differ.DIFFERENT_EXTENSIONS_ERROR);
     }
+
+    @Test
+    public void differTestFirstInnerJSON() throws Exception {
+        String firstPath = "./src/test/resources/fixtures/JSON-files/differTestFirstInnerJSONPath1.json";
+        String secondPath = "./src/test/resources/fixtures/JSON-files/differTestFirstInnerJSONPath2.json";
+        String result = Differ.generate(firstPath, secondPath);
+        assertThat(result).isEqualTo(differTestFirstInnerCorrectString);
+    }
+
+    @Test
+    public void differTestSecondInnerJSON() throws Exception {
+        String firstPath = "./src/test/resources/fixtures/JSON-files/differTestSecondInnerJSONPath1.json";
+        String secondPath = "./src/test/resources/fixtures/JSON-files/differTestSecondInnerJSONPath2.json";
+        String result = Differ.generate(firstPath, secondPath);
+        assertThat(result).isEqualTo(differTestSecondInnerCorrectString);
+    }
+//
+//    @Test
+//    public void differTestFirstInnerYAML() throws Exception {
+//        String firstPath = "./src/test/resources/fixtures/JSON-files/differTestFirstInnerYAMLPath1.json";
+//        String secondPath = "./src/test/resources/fixtures/JSON-files/differTestFirstInnerYAMLPath2.json";
+//        String result = Differ.generate(firstPath, secondPath);
+//        assertThat(result).isEqualTo(differTestFirstInnerCorrectString);
+//    }
+//
+//    @Test
+//    public void differTestSecondInnerYAML() throws Exception {
+//        String firstPath = "./src/test/resources/fixtures/JSON-files/differTestSecondInnerYAMLPath1.json";
+//        String secondPath = "./src/test/resources/fixtures/JSON-files/differTestSecondInnerYAMLPath2.json";
+//        String result = Differ.generate(firstPath, secondPath);
+//        assertThat(result).isEqualTo(differTestSecondInnerCorrectString);
+//    }
 }
