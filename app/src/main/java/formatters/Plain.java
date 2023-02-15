@@ -3,6 +3,7 @@ package formatters;
 import hexlet.code.Differ;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Plain {
@@ -12,8 +13,8 @@ public class Plain {
         if (keyDifferTypes.size() == 0) {
             return "";
         }
-        Map<String, Object> firstPreparedMap = addComplexValues(firstFileParsedMap);
-        Map<String, Object> secondPreparedMap = addComplexValues(secondFileParsedMap);
+        Map<String, Object> firstPreparedMap = formatMapElements(firstFileParsedMap);
+        Map<String, Object> secondPreparedMap = formatMapElements(secondFileParsedMap);
         StringBuilder treeMapToOutputString = new StringBuilder();
 
         for (Map.Entry<String, String> element : keyDifferTypes.entrySet()) {
@@ -25,24 +26,29 @@ public class Plain {
             if (elementValue.equals(Differ.KEY_TYPES[1])) {
                 treeMapToOutputString.append("Property '").append(elementKey).append("' was removed");
             } else if (elementValue.equals(Differ.KEY_TYPES[2])) {
-                treeMapToOutputString
-                        .append("Property '").append(elementKey)
-                        .append("' was updated. From ").append("'").append(firstFileValueByElementKey).append("'")
-                        .append(" to ").append("'").append(secondFileValueByElementKey).append("'");
+                treeMapToOutputString.append("Property '").append(elementKey)
+                        .append("' was updated. From ").append(firstFileValueByElementKey)
+                        .append(" to ").append(secondFileValueByElementKey);
             } else if (elementValue.equals(Differ.KEY_TYPES[3])) {
-                treeMapToOutputString
-                        .append("Property '").append(elementKey).append("' was added with value: ")
-                        .append("'").append(secondFileValueByElementKey).append("'");
+                treeMapToOutputString.append("Property '").append(elementKey)
+                        .append("' was added with value: ").append(secondFileValueByElementKey);
             }
-            treeMapToOutputString.append("\n");
+
+            if (!elementValue.equals(Differ.KEY_TYPES[0])) {
+                treeMapToOutputString.append("\n");
+            }
         }
         return treeMapToOutputString.toString();
     }
 
-    private static Map<String, Object> addComplexValues(Map<String, Object> inputParsedMap) {
+    private static Map<String, Object> formatMapElements(Map<String, Object> inputParsedMap) {
         for (Map.Entry<String, Object> element : inputParsedMap.entrySet()) {
-            if (element.getValue().getClass() == ArrayList.class) {
+            Object elementValue = element.getValue();
+
+            if (elementValue.getClass() == ArrayList.class || elementValue.getClass() == LinkedHashMap.class) {
                 element.setValue("[complex value]");
+            } else if (elementValue.getClass() == String.class && !elementValue.equals("null")) {
+                element.setValue("'" + elementValue + "'");
             }
         }
         return inputParsedMap;
