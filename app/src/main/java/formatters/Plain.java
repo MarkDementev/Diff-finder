@@ -36,12 +36,12 @@ public class Plain {
 
     private static Map<String, Object> formatMapElements(Map<String, Object> inputParsedMap) {
         for (Map.Entry<String, Object> element : inputParsedMap.entrySet()) {
-            Object elementValue = element.getValue();
+            Object elementValueClass = element.getValue().getClass();
 
-            if (elementValue.getClass() == ArrayList.class || elementValue.getClass() == LinkedHashMap.class) {
+            if (elementValueClass == ArrayList.class || elementValueClass == LinkedHashMap.class) {
                 element.setValue("[complex value]");
-            } else if (elementValue.getClass() == String.class && !elementValue.equals("null")) {
-                element.setValue("'" + elementValue + "'");
+            } else if (elementValueClass == String.class && !element.getValue().equals("null")) {
+                element.setValue("'" + element.getValue() + "'");
             }
         }
         return inputParsedMap;

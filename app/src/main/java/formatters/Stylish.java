@@ -25,7 +25,7 @@ public class Stylish {
                         .append(" - ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey))
                         .append("\n + ").append(elementKey).append(": ")
                         .append(secondFileParsedMap.get(elementKey));
-            } else if (elementValue.equals(Differ.KEY_TYPES[3])) {
+            } else {
                 treeMapToOutputString
                         .append(" + ").append(elementKey).append(": ").append(secondFileParsedMap.get(elementKey));
             }

@@ -81,11 +81,10 @@ public class Differ {
 
         for (Map.Entry<String, Object> firstMapElement : firstFileParsedMap.entrySet()) {
             String firstMapElementKey = firstMapElement.getKey();
-            Object firstMapElementValue = firstMapElement.getValue();
             Object secondMapValueByFirstMapElementKey = secondFileParsedMap.get(firstMapElementKey);
 
             if (secondFileParsedMap.containsKey(firstMapElementKey)
-                    && secondMapValueByFirstMapElementKey.equals(firstMapElementValue)) {
+                    && secondMapValueByFirstMapElementKey.equals(firstMapElement.getValue())) {
                 keyDifferTypes.put(firstMapElementKey, KEY_TYPES[0]);
             } else if (!secondFileParsedMap.containsKey(firstMapElementKey)) {
                 keyDifferTypes.put(firstMapElementKey, KEY_TYPES[1]);
