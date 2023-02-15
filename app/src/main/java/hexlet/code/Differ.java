@@ -89,8 +89,7 @@ public class Differ {
                 keyDifferTypes.put(firstMapElementKey, KEY_TYPES[0]);
             } else if (!secondFileParsedMap.containsKey(firstMapElementKey)) {
                 keyDifferTypes.put(firstMapElementKey, KEY_TYPES[1]);
-            } else if (secondFileParsedMap.containsKey(firstMapElementKey)
-                    && !secondMapValueByFirstMapElementKey.equals(firstMapElementValue)) {
+            } else {
                 keyDifferTypes.put(firstMapElementKey, KEY_TYPES[2]);
             }
         }
