@@ -1,18 +1,20 @@
 package hexlet.code;
 
 import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.nio.file.Paths;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class DifferTest {
+    public static final String FIRST_JSON_PATH_1 =
+            "./src/test/resources/fixtures/JSON-files/differTestFirstPath1.json";
+    public static final String FIRST_JSON_PATH_2 =
+            "./src/test/resources/fixtures/JSON-files/differTestFirstPath2.json";
     private static final String STYLISH_FORMAT = "stylish";
     private static final String PLAIN_FORMAT = "plain";
-    private static final String FIRST_JSON_PATH_1 =
-            "./src/test/resources/fixtures/JSON-files/differTestFirstPath1.json";
-    private static final String FIRST_JSON_PATH_2 =
-            "./src/test/resources/fixtures/JSON-files/differTestFirstPath2.json";
     private static final String SECOND_JSON_PATH_1 =
             "./src/test/resources/fixtures/JSON-files/differTestSecondPath1.json";
     private static final String SECOND_JSON_PATH_2 =
