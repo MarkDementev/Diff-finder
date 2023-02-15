@@ -10,9 +10,6 @@ public class Plain {
     public static String formResultStringByPlain(Map<String, String> keyDifferTypes,
                                                      Map<String, Object> firstFileParsedMap,
                                                      Map<String, Object> secondFileParsedMap) {
-        if (keyDifferTypes.size() == 0) {
-            return "";
-        }
         Map<String, Object> firstPreparedMap = formatMapElements(firstFileParsedMap);
         Map<String, Object> secondPreparedMap = formatMapElements(secondFileParsedMap);
         StringBuilder treeMapToOutputString = new StringBuilder();
@@ -24,18 +21,14 @@ public class Plain {
             Object secondFileValueByElementKey = secondPreparedMap.get(elementKey);
 
             if (elementValue.equals(Differ.KEY_TYPES[1])) {
-                treeMapToOutputString.append("Property '").append(elementKey).append("' was removed");
+                treeMapToOutputString.append("Property '").append(elementKey).append("' was removed\n");
             } else if (elementValue.equals(Differ.KEY_TYPES[2])) {
                 treeMapToOutputString.append("Property '").append(elementKey)
                         .append("' was updated. From ").append(firstFileValueByElementKey)
-                        .append(" to ").append(secondFileValueByElementKey);
+                        .append(" to ").append(secondFileValueByElementKey).append("\n");
             } else if (elementValue.equals(Differ.KEY_TYPES[3])) {
                 treeMapToOutputString.append("Property '").append(elementKey)
-                        .append("' was added with value: ").append(secondFileValueByElementKey);
-            }
-
-            if (!elementValue.equals(Differ.KEY_TYPES[0])) {
-                treeMapToOutputString.append("\n");
+                        .append("' was added with value: ").append(secondFileValueByElementKey).append("\n");
             }
         }
         return treeMapToOutputString.toString();

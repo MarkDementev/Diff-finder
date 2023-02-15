@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Differ {
+    public static final String BOTH_FILES_EMPTY = "Both files are empty!";
     public static final String DIFFERENT_EXTENSIONS_ERROR = "Files has different filename extensions."
             + "\nEnter paths only with same filename extensions!";
     public static final String UNKNOWN_EXTENSION_ERROR = "There is unknown filename extension.\nCheck input files!";
@@ -20,6 +21,16 @@ public class Differ {
         String secondFileAbsolutePath = isFileExistThenToAbsolutePath(secondFilePath);
         Map<String, Object> firstFileParsedMap = Parser.parseToMap(filesExtension, firstFileAbsolutePath);
         Map<String, Object> secondFileParsedMap = Parser.parseToMap(filesExtension, secondFileAbsolutePath);
+
+        if (filesExtension.equals(FILE_EXTENSIONS[0])) {
+            if (firstFileParsedMap.size() == 0 && secondFileParsedMap.size() == 0) {
+                return BOTH_FILES_EMPTY;
+            }
+        } else {
+            if (firstFileParsedMap == null && secondFileParsedMap == null) {
+                return BOTH_FILES_EMPTY;
+            }
+        }
         Map<String, String> keyDifferTypes = formKeyDifferTypesMap(firstFileParsedMap, secondFileParsedMap);
 
         return Formatter.useFormatToFormOutputString(keyDifferTypes, firstFileParsedMap, secondFileParsedMap, format);
@@ -59,9 +70,7 @@ public class Differ {
                                                        Map<String, Object> secondFileParsedMap) {
         Map<String, String> keyDifferTypes = new TreeMap<>();
 
-        if (firstFileParsedMap == null && secondFileParsedMap == null) {
-            return keyDifferTypes;
-        } else if (firstFileParsedMap == null) {
+        if (firstFileParsedMap == null) {
             for (Map.Entry<String, Object> element : secondFileParsedMap.entrySet()) {
                 keyDifferTypes.put(element.getKey(), KEY_TYPES[3]);
             }

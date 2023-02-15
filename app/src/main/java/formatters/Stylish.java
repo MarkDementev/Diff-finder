@@ -8,9 +8,6 @@ public class Stylish {
     public static String formResultStringByStylish(Map<String, String> keyDifferTypes,
                                                    Map<String, Object> firstFileParsedMap,
                                                    Map<String, Object> secondFileParsedMap) {
-        if (keyDifferTypes.size() == 0) {
-            return "\n{\n}";
-        }
         StringBuilder treeMapToOutputString = new StringBuilder("\n{\n");
 
         for (Map.Entry<String, String> element : keyDifferTypes.entrySet()) {

@@ -81,7 +81,6 @@ public class DifferTest {
             + " - C: true\n"
             + " - D: 1\n"
             + "}";
-    private static final String BOTH_EMPTY_PATHS_CORRECT_STRING = "\n{\n}";
     private static final String FIRST_INNER_CORRECT_STRING = "\n{\n"
             + "   chars1: [a, b, c]\n"
             + " - chars2: [d, e, f]\n"
@@ -162,7 +161,7 @@ public class DifferTest {
     @Test
     public void testBothEmptyPathsJSON() throws Exception {
         String result = Differ.generate(EMPTY_JSON_PATH, EMPTY_JSON_PATH, STYLISH_FORMAT);
-        assertThat(result).isEqualTo(BOTH_EMPTY_PATHS_CORRECT_STRING);
+        assertThat(result).isEqualTo(Differ.BOTH_FILES_EMPTY);
     }
 
     @Test
@@ -200,7 +199,7 @@ public class DifferTest {
     @Test
     public void testBothEmptyPathsYAML() throws Exception {
         String result = Differ.generate(EMPTY_YAML_PATH, EMPTY_YAML_PATH, STYLISH_FORMAT);
-        assertThat(result).isEqualTo(BOTH_EMPTY_PATHS_CORRECT_STRING);
+        assertThat(result).isEqualTo(Differ.BOTH_FILES_EMPTY);
     }
 
     @Test
