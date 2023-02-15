@@ -115,7 +115,8 @@ public class DifferTest {
             + "   D: [value1, value2]\n"
             + " + E: [true, false]\n"
             + "}";
-    private static final String PLAIN_CORRECT_STRING = "Property 'follow' was removed\n"
+    private static final String PLAIN_CORRECT_STRING =
+            "Property 'follow' was removed\n"
             + "Property 'proxy' was removed\n"
             + "Property 'timeout' was updated. From 50 to 20\n"
             + "Property 'verbose' was added with value: 'true'";

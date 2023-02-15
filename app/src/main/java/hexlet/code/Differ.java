@@ -76,13 +76,7 @@ public class Differ {
         for (Map.Entry<String, Object> firstMapElement : firstFileParsedMap.entrySet()) {
             String firstMapElementKey = firstMapElement.getKey();
             Object firstMapElementValue = firstMapElement.getValue();
-            Object secondMapValueByFirstMapElementKey;
-
-            if (secondFileParsedMap.get(firstMapElementKey) == null) {
-                secondMapValueByFirstMapElementKey = "null";
-            } else {
-                secondMapValueByFirstMapElementKey = secondFileParsedMap.get(firstMapElementKey);
-            }
+            Object secondMapValueByFirstMapElementKey = secondFileParsedMap.get(firstMapElementKey);
 
             if (secondFileParsedMap.containsKey(firstMapElementKey)
                     && secondMapValueByFirstMapElementKey.equals(firstMapElementValue)) {

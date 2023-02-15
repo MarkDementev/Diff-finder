@@ -17,14 +17,30 @@ public class Parser {
         };
     }
 
-    public static Map<String, Object> parseFromJSON(String filePath) throws JsonProcessingException {
+    private static Map<String, Object> parseFromJSON(String filePath) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> jSONMap = mapper.readValue(filePath, new TypeReference<>() { });
 
-        return mapper.readValue(filePath, new TypeReference<>() { });
+        return makeNullsToString(jSONMap);
     }
 
-    public static Map<String, Object> parseFromYAML(String filePath) throws JsonProcessingException {
+    private static Map<String, Object> parseFromYAML(String filePath) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        return mapper.readValue(filePath, new TypeReference<>() { });
+        Map<String, Object> yAMLMap = mapper.readValue(filePath, new TypeReference<>() { });
+
+        return makeNullsToString(yAMLMap);
+    }
+
+    private static Map<String, Object> makeNullsToString(Map<String, Object> map) {
+        if (map == null) {
+            return null;
+        }
+
+        for (Map.Entry<String, Object> element : map.entrySet()) {
+            if (element.getValue() == null) {
+                element.setValue("null");
+            }
+        }
+        return map;
     }
 }
