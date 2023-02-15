@@ -6,7 +6,7 @@ import formatters.Stylish;
 import java.util.Map;
 
 public class Formatter {
-    public static String WRONG_FORMAT_WARNING = "There is unknown output format.\nCheck it!";
+    public static final String WRONG_FORMAT_WARNING = "There is unknown output format.\nCheck it!";
     public static String useFormatToFormOutputString(Map<String, String> keyDifferTypes,
                                                      Map<String, Object> firstFileParsedMap,
                                                      Map<String, Object> secondFileParsedMap,

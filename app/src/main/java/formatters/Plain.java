@@ -6,6 +6,6 @@ public class Plain {
     public static String formResultStringByPlain(Map<String, String> keyDifferTypes,
                                                    Map<String, Object> firstFileParsedMap,
                                                    Map<String, Object> secondFileParsedMap) {
-
+        return "";
     }
 }
