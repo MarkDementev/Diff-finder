@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class DifferTest {
+    private static final String PLAIN_FORMAT = "plain";
     private static final String FIRST_JSON_PATH_1 =
             "./src/test/resources/fixtures/JSON-files/differTestFirstPath1.json";
     private static final String FIRST_JSON_PATH_2 =
@@ -111,6 +112,24 @@ public class DifferTest {
             + "   D: [value1, value2]\n"
             + " + E: [true, false]\n"
             + "}";
+    private static final String PLAIN_CORRECT_STRING = "Property 'follow' was removed"
+            + "Property 'proxy' was removed"
+            + "Property 'timeout' was updated. From 50 to 20"
+            + "Property 'verbose' was added with value: 'true'";
+    private static final String INNER_PLAIN_CORRECT_STRING =
+            "Property 'chars2' was updated. From [complex value] to false"
+            + "Property 'checked' was updated. From false to true"
+            + "Property 'default' was updated. From null to [complex value]"
+            + "Property 'id' was updated. From 45 to null"
+            + "Property 'key1' was removed"
+            + "Property 'key2' was added with value: 'value2'"
+            + "Property 'numbers2' was updated. From [complex value] to [complex value]"
+            + "Property 'numbers3' was removed"
+            + "Property 'numbers4' was added with value: [complex value]"
+            + "Property 'obj1' was added with value: [complex value]"
+            + "Property 'setting1' was updated. From 'Some value' to 'Another value'"
+            + "Property 'setting2' was updated. From 200 to 300"
+            + "Property 'setting3' was updated. From true to 'none'";
 
     @Test
     public void testFirstJSON() throws Exception {
@@ -244,5 +263,29 @@ public class DifferTest {
     public void testSecondInnerYAML() throws Exception {
         String result = Differ.generate(SECOND_INNER_YAML_PATH_1, SECOND_INNER_YAML_PATH_2);
         assertThat(result).isEqualTo(SECOND_INNER_CORRECT_STRING);
+    }
+
+    @Test
+    public void testJSONPlain() throws Exception {
+        String result = Differ.generate(FIRST_JSON_PATH_1, FIRST_JSON_PATH_2, PLAIN_FORMAT);
+        assertThat(result).isEqualTo(PLAIN_CORRECT_STRING);
+    }
+
+    @Test
+    public void testYAMLPlain() throws Exception {
+        String result = Differ.generate(FIRST_YAML_PATH_1, FIRST_YAML_PATH_2, PLAIN_FORMAT);
+        assertThat(result).isEqualTo(PLAIN_CORRECT_STRING);
+    }
+
+    @Test
+    public void testJSONInnerPlain() throws Exception {
+        String result = Differ.generate(FIRST_INNER_JSON_PATH_1, FIRST_INNER_JSON_PATH_2, PLAIN_FORMAT);
+        assertThat(result).isEqualTo(INNER_PLAIN_CORRECT_STRING);
+    }
+
+    @Test
+    public void testYAMLInnerPlain() throws Exception {
+        String result = Differ.generate(FIRST_INNER_YAML_PATH_1, FIRST_INNER_YAML_PATH_2, PLAIN_FORMAT);
+        assertThat(result).isEqualTo(INNER_PLAIN_CORRECT_STRING);
     }
 }
