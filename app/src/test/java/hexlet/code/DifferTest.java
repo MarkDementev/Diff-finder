@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class DifferTest {
+    private static final String STYLISH_FORMAT = "stylish";
     private static final String PLAIN_FORMAT = "plain";
     private static final String FIRST_JSON_PATH_1 =
             "./src/test/resources/fixtures/JSON-files/differTestFirstPath1.json";
@@ -133,37 +134,37 @@ public class DifferTest {
 
     @Test
     public void testFirstJSON() throws Exception {
-        String result = Differ.generate(FIRST_JSON_PATH_1, FIRST_JSON_PATH_2);
+        String result = Differ.generate(FIRST_JSON_PATH_1, FIRST_JSON_PATH_2, STYLISH_FORMAT);
         assertThat(result).isEqualTo(FIRST_CORRECT_STRING);
     }
 
     @Test
     public void testSecondJSON() throws Exception {
-        String result = Differ.generate(SECOND_JSON_PATH_1, SECOND_JSON_PATH_2);
+        String result = Differ.generate(SECOND_JSON_PATH_1, SECOND_JSON_PATH_2, STYLISH_FORMAT);
         assertThat(result).isEqualTo(SECOND_CORRECT_STRING);
     }
 
     @Test
     public void testEmptyPathJSON() throws Exception {
-        String result = Differ.generate(EMPTY_JSON_PATH, FIRST_JSON_PATH_1);
+        String result = Differ.generate(EMPTY_JSON_PATH, FIRST_JSON_PATH_1, STYLISH_FORMAT);
         assertThat(result).isEqualTo(FIRST_EMPTY_PATH_CORRECT_STRING);
     }
 
     @Test
     public void testSecondEmptyPathJSON() throws Exception {
-        String result = Differ.generate(SECOND_JSON_PATH_1, EMPTY_JSON_PATH);
+        String result = Differ.generate(SECOND_JSON_PATH_1, EMPTY_JSON_PATH, STYLISH_FORMAT);
         assertThat(result).isEqualTo(SECOND_EMPTY_PATH_CORRECT_STRING);
     }
 
     @Test
     public void testBothEmptyPathsJSON() throws Exception {
-        String result = Differ.generate(EMPTY_JSON_PATH, EMPTY_JSON_PATH);
+        String result = Differ.generate(EMPTY_JSON_PATH, EMPTY_JSON_PATH, STYLISH_FORMAT);
         assertThat(result).isEqualTo(BOTH_EMPTY_PATHS_CORRECT_STRING);
     }
 
     @Test
     public void testNoFileJSON() {
-        assertThatThrownBy(() -> Differ.generate(FILE_DOESNT_EXIST_JSON, FIRST_JSON_PATH_1))
+        assertThatThrownBy(() -> Differ.generate(FILE_DOESNT_EXIST_JSON, FIRST_JSON_PATH_1, STYLISH_FORMAT))
                 .isInstanceOf(IOException.class)
                 .hasMessageContaining("'" + Paths.get(FILE_DOESNT_EXIST_JSON).toAbsolutePath().normalize()
                         + "' does not exist.\nCheck it!");
@@ -171,37 +172,37 @@ public class DifferTest {
 
     @Test
     public void testFirstYAML() throws Exception {
-        String result = Differ.generate(FIRST_YAML_PATH_1, FIRST_YAML_PATH_2);
+        String result = Differ.generate(FIRST_YAML_PATH_1, FIRST_YAML_PATH_2, STYLISH_FORMAT);
         assertThat(result).isEqualTo(FIRST_CORRECT_STRING);
     }
 
     @Test
     public void testSecondYAML() throws Exception {
-        String result = Differ.generate(SECOND_YAML_PATH_1, SECOND_YAML_PATH_2);
+        String result = Differ.generate(SECOND_YAML_PATH_1, SECOND_YAML_PATH_2, STYLISH_FORMAT);
         assertThat(result).isEqualTo(SECOND_CORRECT_STRING);
     }
 
     @Test
     public void testFirstEmptyPathYAML() throws Exception {
-        String result = Differ.generate(EMPTY_YAML_PATH, FIRST_YAML_PATH_1);
+        String result = Differ.generate(EMPTY_YAML_PATH, FIRST_YAML_PATH_1, STYLISH_FORMAT);
         assertThat(result).isEqualTo(FIRST_EMPTY_PATH_CORRECT_STRING);
     }
 
     @Test
     public void testSecondEmptyPathYAML() throws Exception {
-        String result = Differ.generate(SECOND_YAML_PATH_1, EMPTY_YAML_PATH);
+        String result = Differ.generate(SECOND_YAML_PATH_1, EMPTY_YAML_PATH, STYLISH_FORMAT);
         assertThat(result).isEqualTo(SECOND_EMPTY_PATH_CORRECT_STRING);
     }
 
     @Test
     public void testBothEmptyPathsYAML() throws Exception {
-        String result = Differ.generate(EMPTY_YAML_PATH, EMPTY_YAML_PATH);
+        String result = Differ.generate(EMPTY_YAML_PATH, EMPTY_YAML_PATH, STYLISH_FORMAT);
         assertThat(result).isEqualTo(BOTH_EMPTY_PATHS_CORRECT_STRING);
     }
 
     @Test
     public void testNoFileYAML() {
-        assertThatThrownBy(() -> Differ.generate(FILE_DOESNT_EXIST_YAML, FIRST_YAML_PATH_1))
+        assertThatThrownBy(() -> Differ.generate(FILE_DOESNT_EXIST_YAML, FIRST_YAML_PATH_1, STYLISH_FORMAT))
                 .isInstanceOf(IOException.class)
                 .hasMessageContaining("'" + Paths.get(FILE_DOESNT_EXIST_YAML).toAbsolutePath().normalize()
                         + "' does not exist.\nCheck it!");
@@ -209,59 +210,59 @@ public class DifferTest {
 
     @Test
     public void testUnknownFormatFirstPath() {
-        assertThatThrownBy(() -> Differ.generate(UNKNOWN_FORMAT_PATH, FIRST_JSON_PATH_1))
+        assertThatThrownBy(() -> Differ.generate(UNKNOWN_FORMAT_PATH, FIRST_JSON_PATH_1, STYLISH_FORMAT))
                 .isInstanceOf(Exception.class)
                 .hasMessageContaining(Differ.UNKNOWN_EXTENSION_ERROR);
     }
 
     @Test
     public void testUnknownFormatSecondPath() {
-        assertThatThrownBy(() -> Differ.generate(EMPTY_YAML_PATH, UNKNOWN_FORMAT_PATH))
+        assertThatThrownBy(() -> Differ.generate(EMPTY_YAML_PATH, UNKNOWN_FORMAT_PATH, STYLISH_FORMAT))
                 .isInstanceOf(Exception.class)
                 .hasMessageContaining(Differ.UNKNOWN_EXTENSION_ERROR);
     }
 
     @Test
     public void testUnknownFormatBothPaths() {
-        assertThatThrownBy(() -> Differ.generate(UNKNOWN_FORMAT_PATH, UNKNOWN_FORMAT_PATH))
+        assertThatThrownBy(() -> Differ.generate(UNKNOWN_FORMAT_PATH, UNKNOWN_FORMAT_PATH, STYLISH_FORMAT))
                 .isInstanceOf(Exception.class)
                 .hasMessageContaining(Differ.UNKNOWN_EXTENSION_ERROR);
     }
     @Test
     public void testDifferentFormatFirst() {
-        assertThatThrownBy(() -> Differ.generate(FIRST_YAML_PATH_1, FIRST_JSON_PATH_1))
+        assertThatThrownBy(() -> Differ.generate(FIRST_YAML_PATH_1, FIRST_JSON_PATH_1, STYLISH_FORMAT))
                 .isInstanceOf(Exception.class)
                 .hasMessageContaining(Differ.DIFFERENT_EXTENSIONS_ERROR);
     }
 
     @Test
     public void testDifferentFormatSecond() {
-        assertThatThrownBy(() -> Differ.generate(FIRST_JSON_PATH_2, FIRST_YAML_PATH_2))
+        assertThatThrownBy(() -> Differ.generate(FIRST_JSON_PATH_2, FIRST_YAML_PATH_2, STYLISH_FORMAT))
                 .isInstanceOf(Exception.class)
                 .hasMessageContaining(Differ.DIFFERENT_EXTENSIONS_ERROR);
     }
 
     @Test
     public void testFirstInnerJSON() throws Exception {
-        String result = Differ.generate(FIRST_INNER_JSON_PATH_1, FIRST_INNER_JSON_PATH_2);
+        String result = Differ.generate(FIRST_INNER_JSON_PATH_1, FIRST_INNER_JSON_PATH_2, STYLISH_FORMAT);
         assertThat(result).isEqualTo(FIRST_INNER_CORRECT_STRING);
     }
 
     @Test
     public void testSecondInnerJSON() throws Exception {
-        String result = Differ.generate(SECOND_INNER_JSON_PATH_1, SECOND_INNER_JSON_PATH_2);
+        String result = Differ.generate(SECOND_INNER_JSON_PATH_1, SECOND_INNER_JSON_PATH_2, STYLISH_FORMAT);
         assertThat(result).isEqualTo(SECOND_INNER_CORRECT_STRING);
     }
 
     @Test
     public void testFirstInnerYAML() throws Exception {
-        String result = Differ.generate(FIRST_INNER_YAML_PATH_1, FIRST_INNER_YAML_PATH_2);
+        String result = Differ.generate(FIRST_INNER_YAML_PATH_1, FIRST_INNER_YAML_PATH_2, STYLISH_FORMAT);
         assertThat(result).isEqualTo(FIRST_INNER_CORRECT_STRING);
     }
 
     @Test
     public void testSecondInnerYAML() throws Exception {
-        String result = Differ.generate(SECOND_INNER_YAML_PATH_1, SECOND_INNER_YAML_PATH_2);
+        String result = Differ.generate(SECOND_INNER_YAML_PATH_1, SECOND_INNER_YAML_PATH_2, STYLISH_FORMAT);
         assertThat(result).isEqualTo(SECOND_INNER_CORRECT_STRING);
     }
 

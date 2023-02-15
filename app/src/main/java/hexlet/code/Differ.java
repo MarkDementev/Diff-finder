@@ -14,7 +14,7 @@ public class Differ {
     private static final String[] KEY_TYPES = {"unchanged", "deleted", "updated", "added"};
     private static final String[] FILE_EXTENSIONS = {".json", ".yml", ".yaml"};
 
-    public static String generate(String firstFilePath, String secondFilePath) throws Exception {
+    public static String generate(String firstFilePath, String secondFilePath, String format) throws Exception {
         String filesExtension = findBothFilesExtension(firstFilePath, secondFilePath);
         String firstFileAbsolutePath = isFileExistThenToAbsolutePath(firstFilePath);
         String secondFileAbsolutePath = isFileExistThenToAbsolutePath(secondFilePath);
@@ -22,7 +22,7 @@ public class Differ {
         Map<String, Object> secondFileParsedMap = Parser.parseToMap(filesExtension, secondFileAbsolutePath);
         Map<String, String> keyDifferTypes = formKeyDifferTypesMap(firstFileParsedMap, secondFileParsedMap);
 
-        return formResultString(keyDifferTypes, firstFileParsedMap, secondFileParsedMap);
+        return Formatter.useFormatToFormOutputString(keyDifferTypes, firstFileParsedMap, secondFileParsedMap, format);
     }
 
     private static String findBothFilesExtension(String firstFilePath, String secondFilePath) throws Exception {
