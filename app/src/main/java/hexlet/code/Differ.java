@@ -14,6 +14,7 @@ public class Differ {
     public static final String UNKNOWN_EXTENSION_ERROR = "There is unknown filename extension.\nCheck input files!";
     public static final String[] KEY_TYPES = {"unchanged", "deleted", "updated", "added"};
     private static final String[] FILE_EXTENSIONS = {".json", ".yml", ".yaml"};
+    private static final int[] PARSED_MAPS_SERIAL_NUMBERS = {1, 2};
 
     public static String generate(String firstFilePath, String secondFilePath, String format) throws Exception {
         String filesExtension = findBothFilesExtension(firstFilePath, secondFilePath);
@@ -31,7 +32,7 @@ public class Differ {
                 return BOTH_FILES_EMPTY;
             }
         }
-        Map<String, String> keyDifferTypes = formKeyDifferTypesMap(firstFileParsedMap, secondFileParsedMap);
+        Map<String, String> keyDifferTypes = formKeyDifferMap(firstFileParsedMap, secondFileParsedMap);
 
         return Formatter.useFormatToFormOutputString(keyDifferTypes, firstFileParsedMap, secondFileParsedMap, format);
     }
@@ -66,20 +67,16 @@ public class Differ {
         return Files.readString(absoluteFilePath);
     }
 
-    private static Map<String, String> formKeyDifferTypesMap(Map<String, Object> firstFileParsedMap,
-                                                       Map<String, Object> secondFileParsedMap) {
+    private static Map<String, String> formKeyDifferMap(Map<String, Object> firstFileParsedMap,
+                                                        Map<String, Object> secondFileParsedMap) {
         Map<String, String> keyDifferTypes = new TreeMap<>();
 
         if (firstFileParsedMap == null) {
-            for (Map.Entry<String, Object> element : secondFileParsedMap.entrySet()) {
-                keyDifferTypes.put(element.getKey(), KEY_TYPES[3]);
-            }
-            return keyDifferTypes;
+            return formKeyDifferMapWhenOneInputMapNull(secondFileParsedMap, keyDifferTypes,
+                    PARSED_MAPS_SERIAL_NUMBERS[0]);
         } else if (secondFileParsedMap == null) {
-            for (Map.Entry<String, Object> element : firstFileParsedMap.entrySet()) {
-                keyDifferTypes.put(element.getKey(), KEY_TYPES[1]);
-            }
-            return keyDifferTypes;
+            return formKeyDifferMapWhenOneInputMapNull(firstFileParsedMap, keyDifferTypes,
+                    PARSED_MAPS_SERIAL_NUMBERS[1]);
         }
 
         for (Map.Entry<String, Object> firstMapElement : firstFileParsedMap.entrySet()) {
@@ -101,6 +98,19 @@ public class Differ {
         for (String secondMapElementKey : secondFileParsedMap.keySet()) {
             if (!firstFileParsedMap.containsKey(secondMapElementKey)) {
                 keyDifferTypes.put(secondMapElementKey, KEY_TYPES[3]);
+            }
+        }
+        return keyDifferTypes;
+    }
+
+    private static Map<String, String> formKeyDifferMapWhenOneInputMapNull(Map<String, Object> noNullMap,
+                                                                           Map<String, String> keyDifferTypes,
+                                                                           int nullMapSerialNumber) {
+        for (Map.Entry<String, Object> element : noNullMap.entrySet()) {
+            if (nullMapSerialNumber == PARSED_MAPS_SERIAL_NUMBERS[0]) {
+                keyDifferTypes.put(element.getKey(), KEY_TYPES[3]);
+            } else {
+                keyDifferTypes.put(element.getKey(), KEY_TYPES[1]);
             }
         }
         return keyDifferTypes;
