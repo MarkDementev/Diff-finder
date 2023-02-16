@@ -15,6 +15,7 @@ public class DifferTest {
             "./src/test/resources/fixtures/JSON-files/differTestFirstPath2.json";
     private static final String STYLISH_FORMAT = "stylish";
     private static final String PLAIN_FORMAT = "plain";
+    private static final String JSON_FORMAT = "json";
     private static final String SECOND_JSON_PATH_1 =
             "./src/test/resources/fixtures/JSON-files/differTestSecondPath1.json";
     private static final String SECOND_JSON_PATH_2 =
@@ -133,6 +134,27 @@ public class DifferTest {
             + "Property 'setting1' was updated. From 'Some value' to 'Another value'\n"
             + "Property 'setting2' was updated. From 200 to 300\n"
             + "Property 'setting3' was updated. From true to 'none'\n";
+    private static final String JSON_CORRECT_STRING =
+            "{\"follow\":{\"deleted\":false},"
+                    + "\"host\":{\"unchanged\":\"hexlet.io\"},"
+                    + "\"proxy\":{\"deleted\":\"123.234.53.22\"},"
+                    + "\"timeout\":{\"was\":50,\"now\":20},"
+                    + "\"verbose\":{\"added\":true}}";
+    private static final String INNER_JSON_CORRECT_STRING = "{\"chars1\":{\"unchanged\":[\"a\",\"b\",\"c\"]},"
+            + "\"chars2\":{\"was\":[\"d\",\"e\",\"f\"],\"now\":false},"
+            + "\"checked\":{\"was\":false,\"now\":true},"
+            + "\"default\":{\"was\":\"null\",\"now\":[\"value1\",\"value2\"]},"
+            + "\"id\":{\"was\":45,\"now\":\"null\"},"
+            + "\"key1\":{\"deleted\":\"value1\"},"
+            + "\"key2\":{\"added\":\"value2\"},"
+            + "\"numbers1\":{\"unchanged\":[1,2,3,4]},"
+            + "\"numbers2\":{\"was\":[2,3,4,5],\"now\":[22,33,44,55]},"
+            + "\"numbers3\":{\"deleted\":[3,4,5]},"
+            + "\"numbers4\":{\"added\":[4,5,6]},"
+            + "\"obj1\":{\"added\":{\"nestedKey\":\"value\",\"isNested\":true}},"
+            + "\"setting1\":{\"was\":\"Some value\",\"now\":\"Another value\"},"
+            + "\"setting2\":{\"was\":200,\"now\":300},"
+            + "\"setting3\":{\"was\":true,\"now\":\"none\"}}";
 
     @Test
     public void testFirstJSON() throws Exception {
@@ -269,26 +291,50 @@ public class DifferTest {
     }
 
     @Test
-    public void testJSONPlain() throws Exception {
+    public void testJSONFormatPlain() throws Exception {
         String result = Differ.generate(FIRST_JSON_PATH_1, FIRST_JSON_PATH_2, PLAIN_FORMAT);
         assertThat(result).isEqualTo(PLAIN_CORRECT_STRING);
     }
 
     @Test
-    public void testYAMLPlain() throws Exception {
+    public void testYAMLFormatPlain() throws Exception {
         String result = Differ.generate(FIRST_YAML_PATH_1, FIRST_YAML_PATH_2, PLAIN_FORMAT);
         assertThat(result).isEqualTo(PLAIN_CORRECT_STRING);
     }
 
     @Test
-    public void testJSONInnerPlain() throws Exception {
+    public void testJSONInnerFormatPlain() throws Exception {
         String result = Differ.generate(FIRST_INNER_JSON_PATH_1, FIRST_INNER_JSON_PATH_2, PLAIN_FORMAT);
         assertThat(result).isEqualTo(INNER_PLAIN_CORRECT_STRING);
     }
 
     @Test
-    public void testYAMLInnerPlain() throws Exception {
+    public void testYAMLInnerFormatPlain() throws Exception {
         String result = Differ.generate(FIRST_INNER_YAML_PATH_1, FIRST_INNER_YAML_PATH_2, PLAIN_FORMAT);
         assertThat(result).isEqualTo(INNER_PLAIN_CORRECT_STRING);
+    }
+
+    @Test
+    public void testJSONFormatJSON() throws Exception {
+        String result = Differ.generate(FIRST_JSON_PATH_1, FIRST_JSON_PATH_2, JSON_FORMAT);
+        assertThat(result).isEqualTo(JSON_CORRECT_STRING);
+    }
+
+    @Test
+    public void testYAMLFormatJSON() throws Exception {
+        String result = Differ.generate(FIRST_YAML_PATH_1, FIRST_YAML_PATH_2, JSON_FORMAT);
+        assertThat(result).isEqualTo(JSON_CORRECT_STRING);
+    }
+
+    @Test
+    public void testJSONInnerFormatJSON() throws Exception {
+        String result = Differ.generate(FIRST_INNER_JSON_PATH_1, FIRST_INNER_JSON_PATH_2, JSON_FORMAT);
+        assertThat(result).isEqualTo(INNER_JSON_CORRECT_STRING);
+    }
+
+    @Test
+    public void testYAMLInnerFormatJSON() throws Exception {
+        String result = Differ.generate(FIRST_INNER_YAML_PATH_1, FIRST_INNER_YAML_PATH_2, JSON_FORMAT);
+        assertThat(result).isEqualTo(INNER_JSON_CORRECT_STRING);
     }
 }

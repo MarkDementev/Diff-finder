@@ -2,6 +2,7 @@ package hexlet.code;
 
 import formatters.Plain;
 import formatters.Stylish;
+import formatters.Json;
 
 import java.util.Map;
 
@@ -15,6 +16,8 @@ public class Formatter {
             case "stylish" -> Stylish.formResultStringByStylish(keyDifferTypes, firstFileParsedMap,
                     secondFileParsedMap);
             case "plain" -> Plain.formResultStringByPlain(keyDifferTypes, firstFileParsedMap,
+                    secondFileParsedMap);
+            case "json" -> Json.formResultStringByJson(keyDifferTypes, firstFileParsedMap,
                     secondFileParsedMap);
             default -> throw new Exception(WRONG_FORMAT_WARNING);
         };
