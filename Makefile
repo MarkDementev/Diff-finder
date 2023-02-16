@@ -26,6 +26,15 @@ lint:
 
 update-deps:
 	make -C app update-deps
+	
+asc-default:
+	make -C app asc-default
+	
+asc-plain:
+	make -C app asc-plain
+	
+asc-json:
+	make -C app asc-json
 
 
 build-run: build run
