@@ -19,8 +19,8 @@ public class Differ {
 
     public static String generate(String firstFilePath, String secondFilePath, String format) throws Exception {
         String filesExtension = findBothFilesExtension(firstFilePath, secondFilePath);
-        String firstFileAbsolutePath = isFileExistThenToAbsolutePath(firstFilePath);
-        String secondFileAbsolutePath = isFileExistThenToAbsolutePath(secondFilePath);
+        String firstFileAbsolutePath = checkIsFileExistThenToAbsolutePath(firstFilePath);
+        String secondFileAbsolutePath = checkIsFileExistThenToAbsolutePath(secondFilePath);
         Map<String, Object> firstFileParsedMap = Parser.parseToMap(filesExtension, firstFileAbsolutePath);
         Map<String, Object> secondFileParsedMap = Parser.parseToMap(filesExtension, secondFileAbsolutePath);
 
@@ -35,12 +35,12 @@ public class Differ {
         }
         Map<String, String> keyDifferTypes = formKeyDifferMap(firstFileParsedMap, secondFileParsedMap);
 
-        return Formatter.useFormatToFormOutputString(keyDifferTypes, firstFileParsedMap, secondFileParsedMap, format);
+        return Formatter.useFormatToFormResultString(keyDifferTypes, firstFileParsedMap, secondFileParsedMap, format);
     }
 
     private static String findBothFilesExtension(String firstFilePath, String secondFilePath) throws Exception {
-        String firstFileExtension = isCorrectExtension(firstFilePath);
-        String secondFileExtension = isCorrectExtension(secondFilePath);
+        String firstFileExtension = checkIsCorrectExtension(firstFilePath);
+        String secondFileExtension = checkIsCorrectExtension(secondFilePath);
 
         if (!firstFileExtension.equals(secondFileExtension)) {
             throw new Exception(DIFFERENT_EXTENSIONS_ERROR);
@@ -48,7 +48,7 @@ public class Differ {
         return firstFileExtension;
     }
 
-    private static String isCorrectExtension(String filePath) throws Exception {
+    private static String checkIsCorrectExtension(String filePath) throws Exception {
         String checkedFilePath = filePath.substring(filePath.lastIndexOf('.'));
 
         if (checkedFilePath.equals(FILE_EXTENSIONS[1]) || checkedFilePath.equals(FILE_EXTENSIONS[2])) {
@@ -59,7 +59,7 @@ public class Differ {
         throw new Exception(UNKNOWN_EXTENSION_ERROR);
     }
 
-    private static String isFileExistThenToAbsolutePath(String filePath) throws IOException {
+    private static String checkIsFileExistThenToAbsolutePath(String filePath) throws IOException {
         Path absoluteFilePath = Paths.get(filePath).toAbsolutePath().normalize();
 
         if (!Files.exists(absoluteFilePath)) {

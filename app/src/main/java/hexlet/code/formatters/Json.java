@@ -4,19 +4,19 @@ import hexlet.code.Differ;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Json {
     private static final String[] UPDATE_DIFFER_TYPE_JSON_TEXT_ELEMENTS = {"was", "now"};
+
     public static String formResultStringByJson(Map<String, String> keyDifferTypes,
                                                 Map<String, Object> firstFileParsedMap,
                                                 Map<String, Object> secondFileParsedMap)
             throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> outputMap = new TreeMap<>();
+        Map<String, Object> outputMap = new LinkedHashMap<>();
 
         for (Map.Entry<String, String> element : keyDifferTypes.entrySet()) {
             String elementKey = element.getKey();
@@ -25,13 +25,20 @@ public class Json {
             if (elementValue.equals(Differ.KEY_TYPES[0]) || elementValue.equals(Differ.KEY_TYPES[1])) {
                 outputMap.put(elementKey, Map.of(elementValue, firstFileParsedMap.get(elementKey)));
             } else if (elementValue.equals(Differ.KEY_TYPES[2])) {
-                outputMap.put(elementKey, new LinkedHashMap<>(Map.of(
-                        UPDATE_DIFFER_TYPE_JSON_TEXT_ELEMENTS[0], firstFileParsedMap.get(elementKey),
-                        UPDATE_DIFFER_TYPE_JSON_TEXT_ELEMENTS[1], secondFileParsedMap.get(elementKey))));
+                outputMap.put(elementKey, formLinkedHashMap(elementKey, firstFileParsedMap, secondFileParsedMap));
             } else {
                 outputMap.put(elementKey, Map.of(elementValue, secondFileParsedMap.get(elementKey)));
             }
         }
         return mapper.writeValueAsString(outputMap);
+    }
+
+    private static LinkedHashMap<String, Object> formLinkedHashMap(String elementKey,
+                                                                   Map<String, Object> firstFileParsedMap,
+                                                                   Map<String, Object> secondFileParsedMap) {
+        LinkedHashMap<String, Object> whenAddedMiddleMap = new LinkedHashMap<>();
+        whenAddedMiddleMap.put(UPDATE_DIFFER_TYPE_JSON_TEXT_ELEMENTS[0], firstFileParsedMap.get(elementKey));
+        whenAddedMiddleMap.put(UPDATE_DIFFER_TYPE_JSON_TEXT_ELEMENTS[1], secondFileParsedMap.get(elementKey));
+        return whenAddedMiddleMap;
     }
 }

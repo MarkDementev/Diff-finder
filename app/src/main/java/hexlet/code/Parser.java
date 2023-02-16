@@ -9,6 +9,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 public class Parser {
     private static final String NO_FILE_EXTENSION_WARNING = "There is no file extension!!!";
+
     public static Map<String, Object> parseToMap(String filesExtension, String filePath)
             throws NullPointerException, JsonProcessingException {
         return switch (filesExtension) {

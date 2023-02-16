@@ -8,7 +8,8 @@ import java.util.Map;
 
 public class Formatter {
     public static final String WRONG_FORMAT_WARNING = "There is unknown output format.\nCheck it!";
-    public static String useFormatToFormOutputString(Map<String, String> keyDifferTypes,
+
+    public static String useFormatToFormResultString(Map<String, String> keyDifferTypes,
                                                      Map<String, Object> firstFileParsedMap,
                                                      Map<String, Object> secondFileParsedMap,
                                                      String format) throws Exception {

@@ -1,7 +1,6 @@
 package hexlet.code.formatters;
 
 import hexlet.code.Differ;
-import hexlet.code.Parser;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -16,11 +15,11 @@ public class Plain {
     private static  final String COMPLEX_TEXT = "[complex value]";
 
     public static String formResultStringByPlain(Map<String, String> keyDifferTypes,
-                                                     Map<String, Object> firstFileParsedMap,
-                                                     Map<String, Object> secondFileParsedMap) {
+                                                 Map<String, Object> firstFileParsedMap,
+                                                 Map<String, Object> secondFileParsedMap) {
+        StringBuilder resultString = new StringBuilder();
         Map<String, Object> firstPreparedMap = formatMapElements(firstFileParsedMap);
         Map<String, Object> secondPreparedMap = formatMapElements(secondFileParsedMap);
-        StringBuilder treeMapToOutputString = new StringBuilder();
 
         for (Map.Entry<String, String> element : keyDifferTypes.entrySet()) {
             String elementKey = element.getKey();
@@ -29,21 +28,21 @@ public class Plain {
             Object secondFileValueByElementKey = secondPreparedMap.get(elementKey);
 
             if (elementValue.equals(Differ.KEY_TYPES[1])) {
-                treeMapToOutputString.append(PROPERTY_TEXT).append(elementKey).append(REMOVED_TEXT);
+                resultString.append(PROPERTY_TEXT).append(elementKey).append(REMOVED_TEXT);
             } else if (elementValue.equals(Differ.KEY_TYPES[2])) {
-                treeMapToOutputString.append(PROPERTY_TEXT).append(elementKey)
+                resultString.append(PROPERTY_TEXT).append(elementKey)
                         .append(UPDATED_TEXT).append(firstFileValueByElementKey)
                         .append(UPDATED_TO_TEXT).append(secondFileValueByElementKey).append("\n");
             } else if (elementValue.equals(Differ.KEY_TYPES[3])) {
-                treeMapToOutputString.append(PROPERTY_TEXT).append(elementKey)
+                resultString.append(PROPERTY_TEXT).append(elementKey)
                         .append(ADDED_TEXT).append(secondFileValueByElementKey).append("\n");
             }
         }
-        return treeMapToOutputString.toString();
+        return resultString.toString();
     }
 
-    private static Map<String, Object> formatMapElements(Map<String, Object> inputParsedMap) {
-        for (Map.Entry<String, Object> element : inputParsedMap.entrySet()) {
+    private static Map<String, Object> formatMapElements(Map<String, Object> inputMap) {
+        for (Map.Entry<String, Object> element : inputMap.entrySet()) {
             Object elementValueClass = element.getValue().getClass();
 
             if (elementValueClass == ArrayList.class || elementValueClass == LinkedHashMap.class) {
@@ -52,6 +51,6 @@ public class Plain {
                 element.setValue("'" + element.getValue() + "'");
             }
         }
-        return inputParsedMap;
+        return inputMap;
     }
 }
