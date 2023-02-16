@@ -16,6 +16,11 @@ public class Differ {
     public static final String[] KEY_TYPES = {"unchanged", "deleted", "updated", "added"};
     private static final String[] FILE_EXTENSIONS = {".json", ".yml", ".yaml"};
     private static final int[] PARSED_MAPS_SERIAL_NUMBERS = {1, 2};
+    private static final String DEFAULT_FORMAT = "stylish";
+
+    public static String generate(String firstFilePath, String secondFilePath) throws Exception {
+        return generate(firstFilePath, secondFilePath, DEFAULT_FORMAT);
+    }
 
     public static String generate(String firstFilePath, String secondFilePath, String format) throws Exception {
         String filesExtension = findBothFilesExtension(firstFilePath, secondFilePath);
