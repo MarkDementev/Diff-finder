@@ -27,11 +27,14 @@ lint:
 update-deps:
 	./gradlew useLatestVersions
 
-asc-json:
-	./build/install/app/bin/app ./src/test/resources/fixtures/JSON-files/differTestFirstPath1.json ./src/test/resources/fixtures/JSON-files/differTestFirstPath2.json
+asc-default:
+	./build/install/app/bin/app ./src/test/resources/fixtures/JSON-files/differTestSecondInnerJSONPath1.json ./src/test/resources/fixtures/JSON-files/differTestSecondInnerJSONPath2.json
 
-asc-yaml:
-	./build/install/app/bin/app ./src/test/resources/fixtures.YAML-files/differTestFirstPath1.yml ./src/test/resources/fixtures.YAML-files/differTestFirstPath2.yml
+asc-plain:
+	./build/install/app/bin/app -f plain ./src/test/resources/fixtures.YAML-files/differTestFirstInnerYAMLPath1.yml ./src/test/resources/fixtures.YAML-files/differTestFirstInnerYAMLPath2.yml
+
+asc-json:
+	./build/install/app/bin/app -f json ./src/test/resources/fixtures/JSON-files/differTestSecondInnerJSONPath1.json ./src/test/resources/fixtures/JSON-files/differTestSecondInnerJSONPath2.json
 
 
 build-run: build run

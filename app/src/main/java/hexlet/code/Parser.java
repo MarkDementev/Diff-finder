@@ -8,12 +8,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 public class Parser {
+    private static final String NO_FILE_EXTENSION_WARNING = "There is no file extension!!!";
     public static Map<String, Object> parseToMap(String filesExtension, String filePath)
             throws NullPointerException, JsonProcessingException {
         return switch (filesExtension) {
             case ".json" -> parseFromJSON(filePath);
             case ".yml" -> parseFromYAML(filePath);
-            default -> throw new NullPointerException("There is no file extension!!!");
+            default -> throw new NullPointerException(NO_FILE_EXTENSION_WARNING);
         };
     }
 
@@ -38,7 +39,7 @@ public class Parser {
 
         for (Map.Entry<String, Object> element : map.entrySet()) {
             if (element.getValue() == null) {
-                element.setValue("null");
+                element.setValue(Differ.NULL_STRING_TEXT);
             }
         }
         return map;

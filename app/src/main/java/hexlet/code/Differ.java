@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Differ {
+    public static  final String NULL_STRING_TEXT = "null";
     public static final String BOTH_FILES_EMPTY = "Both files are empty!";
     public static final String DIFFERENT_EXTENSIONS_ERROR = "Files has different filename extensions."
             + "\nEnter paths only with same filename extensions!";
