@@ -1,5 +1,8 @@
-package hexlet.code;
+package hexlet.code.formatters;
 
+import hexlet.code.Differ;
+import hexlet.code.DifferTest;
+import hexlet.code.Formatter;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
