@@ -14,11 +14,11 @@ public class Stylish {
             String elementKey = element.getKey();
             String elementValue = element.getValue();
 
-            if (elementValue.equals(Differ.KEY_TYPES[0])) {
+            if (elementValue.equals(Differ.UNCHANGED_KEY)) {
                 resultString.append("    ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey));
-            } else if (elementValue.equals(Differ.KEY_TYPES[1])) {
+            } else if (elementValue.equals(Differ.DELETED_KEY)) {
                 resultString.append("  - ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey));
-            } else if (elementValue.equals(Differ.KEY_TYPES[2])) {
+            } else if (elementValue.equals(Differ.UPDATED_KEY)) {
                 resultString.append("  - ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey))
                         .append("\n  + ").append(elementKey).append(": ").append(secondFileParsedMap.get(elementKey));
             } else {

@@ -22,9 +22,9 @@ public class Json {
             String elementKey = element.getKey();
             String elementValue = element.getValue();
 
-            if (elementValue.equals(Differ.KEY_TYPES[0]) || elementValue.equals(Differ.KEY_TYPES[1])) {
+            if (elementValue.equals(Differ.UNCHANGED_KEY) || elementValue.equals(Differ.DELETED_KEY)) {
                 outputMap.put(elementKey, Map.of(elementValue, firstFileParsedMap.get(elementKey)));
-            } else if (elementValue.equals(Differ.KEY_TYPES[2])) {
+            } else if (elementValue.equals(Differ.UPDATED_KEY)) {
                 outputMap.put(elementKey, formLinkedHashMap(elementKey, firstFileParsedMap, secondFileParsedMap));
             } else {
                 outputMap.put(elementKey, Map.of(elementValue, secondFileParsedMap.get(elementKey)));

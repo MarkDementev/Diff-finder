@@ -27,13 +27,13 @@ public class Plain {
             Object firstFileValueByElementKey = firstPreparedMap.get(elementKey);
             Object secondFileValueByElementKey = secondPreparedMap.get(elementKey);
 
-            if (elementValue.equals(Differ.KEY_TYPES[1])) {
+            if (elementValue.equals(Differ.DELETED_KEY)) {
                 resultString.append(PROPERTY_TEXT).append(elementKey).append(REMOVED_TEXT);
-            } else if (elementValue.equals(Differ.KEY_TYPES[2])) {
+            } else if (elementValue.equals(Differ.UPDATED_KEY)) {
                 resultString.append(PROPERTY_TEXT).append(elementKey)
                         .append(UPDATED_TEXT).append(firstFileValueByElementKey)
                         .append(UPDATED_TO_TEXT).append(secondFileValueByElementKey).append("\n");
-            } else if (elementValue.equals(Differ.KEY_TYPES[3])) {
+            } else if (elementValue.equals(Differ.ADDED_KEY)) {
                 resultString.append(PROPERTY_TEXT).append(elementKey)
                         .append(ADDED_TEXT).append(secondFileValueByElementKey).append("\n");
             }
