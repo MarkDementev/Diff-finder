@@ -15,14 +15,14 @@ public class Stylish {
             String elementValue = element.getValue();
 
             if (elementValue.equals(Differ.KEY_TYPES[0])) {
-                resultString.append("   ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey));
+                resultString.append("    ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey));
             } else if (elementValue.equals(Differ.KEY_TYPES[1])) {
-                resultString.append(" - ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey));
+                resultString.append("  - ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey));
             } else if (elementValue.equals(Differ.KEY_TYPES[2])) {
-                resultString.append(" - ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey))
-                        .append("\n + ").append(elementKey).append(": ").append(secondFileParsedMap.get(elementKey));
+                resultString.append("  - ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey))
+                        .append("\n  + ").append(elementKey).append(": ").append(secondFileParsedMap.get(elementKey));
             } else {
-                resultString.append(" + ").append(elementKey).append(": ").append(secondFileParsedMap.get(elementKey));
+                resultString.append("  + ").append(elementKey).append(": ").append(secondFileParsedMap.get(elementKey));
             }
             resultString.append("\n");
         }
