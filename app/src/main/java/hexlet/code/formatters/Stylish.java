@@ -8,7 +8,7 @@ public class Stylish {
     public static String formResultStringByStylish(Map<String, String> keyDifferTypes,
                                                    Map<String, Object> firstFileParsedMap,
                                                    Map<String, Object> secondFileParsedMap) {
-        StringBuilder resultString = new StringBuilder("\n{\n");
+        StringBuilder resultString = new StringBuilder("{\n");
 
         for (Map.Entry<String, String> element : keyDifferTypes.entrySet()) {
             String elementKey = element.getKey();
