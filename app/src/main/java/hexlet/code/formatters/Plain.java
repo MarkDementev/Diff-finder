@@ -38,7 +38,7 @@ public class Plain {
                         .append(ADDED_TEXT).append(secondFileValueByElementKey).append("\n");
             }
         }
-        return resultString.toString();
+        return resultString.toString().trim();
     }
 
     private static Map<String, Object> formatMapElements(Map<String, Object> inputMap) {
