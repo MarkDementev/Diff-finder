@@ -10,23 +10,23 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class DifferTest {
     public static final String FIRST_JSON_PATH_1 =
-            "./src/test/resources/fixtures/JSON-files/differTestFirstInnerJSONPath1.json";
+            "./src/test/resources/fixtures/JSON-files/jSONPath1.json";
     public static final String FIRST_JSON_PATH_2 =
-            "./src/test/resources/fixtures/JSON-files/differTestFirstInnerJSONPath2.json";
+            "./src/test/resources/fixtures/JSON-files/jSONPath2.json";
     private static final String FIRST_YAML_PATH_1 =
-            "./src/test/resources/fixtures.YAML-files/differTestFirstInnerYAMLPath1.yml";
+            "./src/test/resources/fixtures.YAML-files/yAMLPath1.yml";
     private static final String FIRST_YAML_PATH_2 =
-            "./src/test/resources/fixtures.YAML-files/differTestFirstInnerYAMLPath2.yml";
+            "./src/test/resources/fixtures.YAML-files/yAMLPath2.yml";
     private static final String EMPTY_JSON_PATH =
             "./src/test/resources/fixtures/JSON-files/emptyFile.json";
     private static final String EMPTY_YAML_PATH =
             "./src/test/resources/fixtures.YAML-files/emptyFile.yml";
     private static final String FILE_DOESNT_EXIST_JSON =
-            "./src/test/resources/fixtures/JSON-files/this file is fantasy.json";
+            "./src/test/resources/fixtures/JSON-files/this-file-is-fantasy.json";
     private static final String FILE_DOESNT_EXIST_YAML =
-            "./src/test/resources/fixtures.YAML-files/this file is fantasy.yml";
+            "./src/test/resources/fixtures.YAML-files/this-file-is-fantasy.yml";
     private static final String UNKNOWN_FORMAT_PATH =
-            "./src/test/resources/fixtures.OTH-files/differTestUnknownFormatFirstPath.oth";
+            "./src/test/resources/fixtures.OTH-files/unknownFormatPath.oth";
     private static final String PLAIN_FORMAT = "plain";
     private static final String JSON_FORMAT = "json";
     private static final String DEFAULT_CORRECT_STRING = "{\n"
