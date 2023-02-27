@@ -14,15 +14,21 @@ public class Stylish {
             String elementKey = element.getKey();
             String elementValue = element.getValue();
 
-            if (elementValue.equals(Tree.UNCHANGED_KEY)) {
-                resultString.append("    ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey));
-            } else if (elementValue.equals(Tree.DELETED_KEY)) {
-                resultString.append("  - ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey));
-            } else if (elementValue.equals(Tree.UPDATED_KEY)) {
-                resultString.append("  - ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey))
-                        .append("\n  + ").append(elementKey).append(": ").append(secondFileParsedMap.get(elementKey));
-            } else {
-                resultString.append("  + ").append(elementKey).append(": ").append(secondFileParsedMap.get(elementKey));
+            switch (elementValue) {
+                case Tree.UNCHANGED_KEY ->
+                        resultString.append("    ").append(elementKey)
+                                .append(": ").append(firstFileParsedMap.get(elementKey));
+                case Tree.DELETED_KEY ->
+                        resultString.append("  - ").append(elementKey)
+                                .append(": ").append(firstFileParsedMap.get(elementKey));
+                case Tree.UPDATED_KEY ->
+                        resultString.append("  - ").append(elementKey)
+                                .append(": ").append(firstFileParsedMap.get(elementKey))
+                                .append("\n  + ").append(elementKey)
+                                .append(": ").append(secondFileParsedMap.get(elementKey));
+                default ->
+                        resultString.append("  + ").append(elementKey)
+                                .append(": ").append(secondFileParsedMap.get(elementKey));
             }
             resultString.append("\n");
         }

@@ -21,9 +21,11 @@ public class Differ {
         String filesExtension = findBothFilesExtension(firstFilePath, secondFilePath);
         String firstFileAbsolutePath = checkIsFileExistThenToAbsolutePath(firstFilePath);
         String secondFileAbsolutePath = checkIsFileExistThenToAbsolutePath(secondFilePath);
+
         Map<String, Object> firstFileParsedMap = Parser.parseToMap(filesExtension, firstFileAbsolutePath);
         Map<String, Object> secondFileParsedMap = Parser.parseToMap(filesExtension, secondFileAbsolutePath);
         Parser.checkIsEmptyFiles(filesExtension, firstFileParsedMap, secondFileParsedMap);
+
         Map<String, String> keyDifferTypes = Tree.formKeyDifferMap(firstFileParsedMap, secondFileParsedMap);
         return Formatter.useFormatToFormResultString(keyDifferTypes, firstFileParsedMap, secondFileParsedMap, format);
     }
