@@ -5,13 +5,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class Differ {
+    public static final String[] FILE_EXTENSIONS = {"json", "yml", "yaml"};
     public static final String DIFFERENT_EXTENSIONS_ERROR = "Files has different filename extensions."
             + "\nEnter paths only with same filename extensions!";
     public static final String UNKNOWN_EXTENSION_ERROR = "There is unknown filename extension.\nCheck input files!";
-    public static final String[] FILE_EXTENSIONS = {".json", ".yml", ".yaml"};
     private static final String DEFAULT_FORMAT = "stylish";
 
     public static String generate(String firstFilePath, String secondFilePath) throws Exception {
@@ -40,7 +39,7 @@ public class Differ {
     }
 
     private static String checkIsCorrectExtension(String filePath) throws Exception {
-        String checkedFilePath = filePath.substring(filePath.lastIndexOf('.'));
+        String checkedFilePath = filePath.substring(filePath.lastIndexOf('.') + 1).toLowerCase();
 
         if (checkedFilePath.equals(FILE_EXTENSIONS[1]) || checkedFilePath.equals(FILE_EXTENSIONS[2])) {
             return FILE_EXTENSIONS[1];

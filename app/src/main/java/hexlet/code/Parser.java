@@ -15,8 +15,8 @@ public class Parser {
     public static Map<String, Object> parseToMap(String filesExtension, String filePath)
             throws NullPointerException, JsonProcessingException {
         return switch (filesExtension) {
-            case ".json" -> parseFromJSON(filePath);
-            case ".yml" -> parseFromYAML(filePath);
+            case "json" -> parseFromJSON(filePath);
+            case "yml" -> parseFromYAML(filePath);
             default -> throw new NullPointerException(NO_FILE_EXTENSION_WARNING);
         };
     }
