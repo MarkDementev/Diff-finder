@@ -1,6 +1,6 @@
 package hexlet.code.formatters;
 
-import hexlet.code.Differ;
+import hexlet.code.Tree;
 
 import java.util.Map;
 
@@ -14,11 +14,11 @@ public class Stylish {
             String elementKey = element.getKey();
             String elementValue = element.getValue();
 
-            if (elementValue.equals(Differ.UNCHANGED_KEY)) {
+            if (elementValue.equals(Tree.UNCHANGED_KEY)) {
                 resultString.append("    ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey));
-            } else if (elementValue.equals(Differ.DELETED_KEY)) {
+            } else if (elementValue.equals(Tree.DELETED_KEY)) {
                 resultString.append("  - ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey));
-            } else if (elementValue.equals(Differ.UPDATED_KEY)) {
+            } else if (elementValue.equals(Tree.UPDATED_KEY)) {
                 resultString.append("  - ").append(elementKey).append(": ").append(firstFileParsedMap.get(elementKey))
                         .append("\n  + ").append(elementKey).append(": ").append(secondFileParsedMap.get(elementKey));
             } else {

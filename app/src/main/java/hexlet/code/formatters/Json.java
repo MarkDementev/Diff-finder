@@ -1,12 +1,13 @@
 package hexlet.code.formatters;
 
-import hexlet.code.Differ;
+import hexlet.code.Tree;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 public class Json {
     private static final String[] UPDATE_DIFFER_TYPE_JSON_TEXT_ELEMENTS = {"was", "now"};
@@ -22,9 +23,9 @@ public class Json {
             String elementKey = element.getKey();
             String elementValue = element.getValue();
 
-            if (elementValue.equals(Differ.UNCHANGED_KEY) || elementValue.equals(Differ.DELETED_KEY)) {
+            if (elementValue.equals(Tree.UNCHANGED_KEY) || elementValue.equals(Tree.DELETED_KEY)) {
                 outputMap.put(elementKey, Map.of(elementValue, firstFileParsedMap.get(elementKey)));
-            } else if (elementValue.equals(Differ.UPDATED_KEY)) {
+            } else if (elementValue.equals(Tree.UPDATED_KEY)) {
                 outputMap.put(elementKey, formLinkedHashMap(elementKey, firstFileParsedMap, secondFileParsedMap));
             } else {
                 outputMap.put(elementKey, Map.of(elementValue, secondFileParsedMap.get(elementKey)));

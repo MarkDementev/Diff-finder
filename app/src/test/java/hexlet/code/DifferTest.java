@@ -149,14 +149,16 @@ public class DifferTest {
 
     @Test
     public void testBothEmptyJSON() throws Exception {
-        String result = Differ.generate(EMPTY_JSON_PATH, EMPTY_JSON_PATH);
-        assertThat(result).isEqualTo(Differ.BOTH_FILES_EMPTY);
+        assertThatThrownBy(() -> Differ.generate(EMPTY_JSON_PATH, EMPTY_JSON_PATH))
+                .isInstanceOf(Exception.class)
+                .hasMessageContaining(Parser.BOTH_FILES_EMPTY);
     }
 
     @Test
     public void testBothEmptyYAML() throws Exception {
-        String result = Differ.generate(EMPTY_YAML_PATH, EMPTY_YAML_PATH);
-        assertThat(result).isEqualTo(Differ.BOTH_FILES_EMPTY);
+        assertThatThrownBy(() -> Differ.generate(EMPTY_YAML_PATH, EMPTY_YAML_PATH))
+                .isInstanceOf(Exception.class)
+                .hasMessageContaining(Parser.BOTH_FILES_EMPTY);
     }
 
     @Test

@@ -1,6 +1,8 @@
 package hexlet.code.formatters;
 
 import hexlet.code.Differ;
+import hexlet.code.Parser;
+import hexlet.code.Tree;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -27,13 +29,13 @@ public class Plain {
             Object firstFileValueByElementKey = firstPreparedMap.get(elementKey);
             Object secondFileValueByElementKey = secondPreparedMap.get(elementKey);
 
-            if (elementValue.equals(Differ.DELETED_KEY)) {
+            if (elementValue.equals(Tree.DELETED_KEY)) {
                 resultString.append(PROPERTY_TEXT).append(elementKey).append(REMOVED_TEXT);
-            } else if (elementValue.equals(Differ.UPDATED_KEY)) {
+            } else if (elementValue.equals(Tree.UPDATED_KEY)) {
                 resultString.append(PROPERTY_TEXT).append(elementKey)
                         .append(UPDATED_TEXT).append(firstFileValueByElementKey)
                         .append(UPDATED_TO_TEXT).append(secondFileValueByElementKey).append("\n");
-            } else if (elementValue.equals(Differ.ADDED_KEY)) {
+            } else if (elementValue.equals(Tree.ADDED_KEY)) {
                 resultString.append(PROPERTY_TEXT).append(elementKey)
                         .append(ADDED_TEXT).append(secondFileValueByElementKey).append("\n");
             }
@@ -47,7 +49,7 @@ public class Plain {
 
             if (elementValueClass == ArrayList.class || elementValueClass == LinkedHashMap.class) {
                 element.setValue(COMPLEX_TEXT);
-            } else if (elementValueClass == String.class && !element.getValue().equals(Differ.NULL_STRING_TEXT)) {
+            } else if (elementValueClass == String.class && !element.getValue().equals(Parser.NULL_STRING_TEXT)) {
                 element.setValue("'" + element.getValue() + "'");
             }
         }
