@@ -181,34 +181,34 @@ public class DifferTest {
     public void testUnknownFormatFirstPath() {
         assertThatThrownBy(() -> Differ.generate(UNKNOWN_FORMAT_PATH, FIRST_JSON_PATH_1))
                 .isInstanceOf(Exception.class)
-                .hasMessageContaining(Differ.UNKNOWN_EXTENSION_ERROR);
+                .hasMessageContaining(Parser.DIFFERENT_EXTENSIONS_ERROR);
     }
 
     @Test
     public void testUnknownFormatSecondPath() {
         assertThatThrownBy(() -> Differ.generate(EMPTY_YAML_PATH, UNKNOWN_FORMAT_PATH))
                 .isInstanceOf(Exception.class)
-                .hasMessageContaining(Differ.UNKNOWN_EXTENSION_ERROR);
+                .hasMessageContaining(Parser.DIFFERENT_EXTENSIONS_ERROR);
     }
 
     @Test
     public void testUnknownFormatBothPaths() {
         assertThatThrownBy(() -> Differ.generate(UNKNOWN_FORMAT_PATH, UNKNOWN_FORMAT_PATH))
                 .isInstanceOf(Exception.class)
-                .hasMessageContaining(Differ.UNKNOWN_EXTENSION_ERROR);
+                .hasMessageContaining(Parser.UNKNOWN_EXTENSION_ERROR);
     }
 
     @Test
     public void testDifferentFormatYAMLJSON() {
         assertThatThrownBy(() -> Differ.generate(FIRST_YAML_PATH_1, FIRST_JSON_PATH_1))
                 .isInstanceOf(Exception.class)
-                .hasMessageContaining(Differ.DIFFERENT_EXTENSIONS_ERROR);
+                .hasMessageContaining(Parser.DIFFERENT_EXTENSIONS_ERROR);
     }
 
     @Test
     public void testDifferentFormatJSONYAML() {
         assertThatThrownBy(() -> Differ.generate(FIRST_JSON_PATH_2, FIRST_YAML_PATH_2))
                 .isInstanceOf(Exception.class)
-                .hasMessageContaining(Differ.DIFFERENT_EXTENSIONS_ERROR);
+                .hasMessageContaining(Parser.DIFFERENT_EXTENSIONS_ERROR);
     }
 }
