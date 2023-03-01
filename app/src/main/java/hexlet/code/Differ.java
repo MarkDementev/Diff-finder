@@ -16,14 +16,17 @@ public class Differ {
     public static String generate(String firstFilePath, String secondFilePath, String format) throws Exception {
         String firstFileAbsolutePath = checkIsFileExistThenToAbsolutePath(firstFilePath);
         String secondFileAbsolutePath = checkIsFileExistThenToAbsolutePath(secondFilePath);
+
         String firstFileExtension = findFileExtension(firstFilePath);
         String secondFileExtension = findFileExtension(secondFilePath);
+
         Parser.checkFilesExtension(firstFileExtension, secondFileExtension);
         Map<String, Object> firstFileParsedMap = Parser.parseToMap(firstFileExtension, firstFileAbsolutePath);
         Map<String, Object> secondFileParsedMap = Parser.parseToMap(firstFileExtension, secondFileAbsolutePath);
         Parser.checkIsEmptyFiles(firstFileExtension, firstFileParsedMap, secondFileParsedMap);
+
         Map<String, String> keyDifferTypes = Tree.formKeyDifferMap(firstFileParsedMap, secondFileParsedMap);
-        return Formatter.useFormatToFormResultString(keyDifferTypes, firstFileParsedMap, secondFileParsedMap, format);
+        return Formatter.chooseFormatterToFormResult(keyDifferTypes, firstFileParsedMap, secondFileParsedMap, format);
     }
 
     private static String checkIsFileExistThenToAbsolutePath(String filePath) throws IOException {

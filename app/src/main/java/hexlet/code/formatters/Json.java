@@ -8,11 +8,10 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
 public class Json {
     private static final String[] UPDATE_DIFFER_TYPE_JSON_TEXT_ELEMENTS = {"was", "now"};
 
-    public static String formResultStringByJson(Map<String, String> keyDifferTypes,
+    public static String formJSONResult(Map<String, String> keyDifferTypes,
                                                 Map<String, Object> firstFileParsedMap,
                                                 Map<String, Object> secondFileParsedMap)
             throws JsonProcessingException {

@@ -15,7 +15,7 @@ public class Plain {
     private static  final String ADDED_TEXT = "' was added with value: ";
     private static  final String COMPLEX_TEXT = "[complex value]";
 
-    public static String formResultStringByPlain(Map<String, String> keyDifferTypes,
+    public static String formPlainResult(Map<String, String> keyDifferTypes,
                                                  Map<String, Object> firstFileParsedMap,
                                                  Map<String, Object> secondFileParsedMap) {
         StringBuilder resultString = new StringBuilder();
