@@ -12,7 +12,7 @@ import java.util.Map;
 public class Formatter {
     public static final String WRONG_FORMAT_WARNING = "There is unknown output format.\nCheck it!";
 
-    public static String chooseFormatterToFormResult(Map<String, String> keyDifferTypes,
+    public static String format(Map<String, String> keyDifferTypes,
                                                      List<Map<String, Object>> parsedMapsList,
                                                      String format) throws Exception {
         Map<String, Object> firstFileParsedMap = parsedMapsList.get(0);
