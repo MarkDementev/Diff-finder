@@ -17,7 +17,7 @@ public class Differ {
 
     public static String generate(String firstFilePath, String secondFilePath, String format) throws Exception {
         List<Map<String, Object>> parsedMapsList = getData(firstFilePath, secondFilePath);
-        Map<String, String> keyDifferTypes = Tree.formKeyDifferMap(parsedMapsList);
+        Map<String, String> keyDifferTypes = Tree.findDiff(parsedMapsList);
         return Formatter.format(keyDifferTypes, parsedMapsList, format);
     }
 
