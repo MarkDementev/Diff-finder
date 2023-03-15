@@ -21,7 +21,7 @@ public class Formatter {
         return switch (format) {
             case "stylish" -> formByStylish(keyDifferTypes, firstFileParsedMap, secondFileParsedMap);
             case "plain" -> formByPlain(keyDifferTypes, firstFileParsedMap, secondFileParsedMap);
-            case "json" -> formByJSON(keyDifferTypes, firstFileParsedMap, secondFileParsedMap);
+            case "json" -> formByJSON(keyDifferTypes);
             default -> throw new RuntimeException(WRONG_FORMAT_WARNING);
         };
     }
@@ -36,8 +36,7 @@ public class Formatter {
         return Plain.formPlainResult(keyDifferTypes, firstFileParsedMap, secondFileParsedMap);
     }
 
-    private static String formByJSON(Map<String, String> keyDifferTypes, Map<String, Object> firstFileParsedMap,
-                                     Map<String, Object> secondFileParsedMap) throws JsonProcessingException {
-        return Json.formJSONResult(keyDifferTypes, firstFileParsedMap, secondFileParsedMap);
+    private static String formByJSON(Map<String, String> keyDifferTypes) throws JsonProcessingException {
+        return Json.formJSONResult(keyDifferTypes);
     }
 }
