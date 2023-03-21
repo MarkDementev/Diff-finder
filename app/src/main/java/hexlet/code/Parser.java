@@ -27,11 +27,11 @@ public class Parser {
     }
 
     public static Map<String, Object> parseToMap(String filesExtension, String filePath)
-            throws NullPointerException, JsonProcessingException {
+            throws JsonProcessingException {
         return switch (filesExtension) {
             case "json" -> parseFromJSON(filePath);
             case "yml" -> parseFromYAML(filePath);
-            default -> throw new NullPointerException(NO_FILE_EXTENSION_WARNING);
+            default -> throw new RuntimeException(NO_FILE_EXTENSION_WARNING);
         };
     }
 
