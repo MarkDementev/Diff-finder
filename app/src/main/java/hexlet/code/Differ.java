@@ -9,18 +9,22 @@ import java.util.List;
 import java.util.Map;
 
 public class Differ {
-    private static final String DEFAULT_FORMAT = "stylish";
     private static List<String> extensionsList = new ArrayList<>(2);
+    private static final String DEFAULT_FORMAT = "stylish";
+
+    //Метод ниже создан для тестирования, чтобы очищать поле extensionsList перед каждым запуском теста
+    //Создан потому, что в этом проекте используются static классы и методы
+    //Потому поле чистится c помощью @BeforeEach
+    //Но для инкапсуляции поле сделано private, и чистится через public метод ниже:
+    public static void cleanExtensionsList() {
+        extensionsList.clear();
+    }
 
     public static String generate(String firstFilePath, String secondFilePath) throws Exception {
         return generate(firstFilePath, secondFilePath, DEFAULT_FORMAT);
     }
 
     public static String generate(String firstFilePath, String secondFilePath, String format) throws Exception {
-        //При запуске тестов одного за другим заполняется extensionsList лишними элементами
-        //Поэтому принудительно очищаю вначале работы
-        //В других проектах, где классы и методы уже не static, такое делать не придётся
-        extensionsList.clear();
         List<Map<String, Object>> parsedMapsList = new ArrayList<>();
 
         Map<String, Object> firstFileParsedMap = getData(firstFilePath);
