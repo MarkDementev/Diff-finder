@@ -129,7 +129,7 @@ public class DifferTest {
             + "}";
 
     @BeforeEach
-    public void cleanExtensionList() {
+    public final void cleanExtensionsList() {
         Differ.cleanExtensionsList();
     }
 
