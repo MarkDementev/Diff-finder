@@ -97,6 +97,35 @@ public class DifferTest {
             + "  + setting2: 200\n"
             + "  + setting3: true\n"
             + "}";
+    private static final String DIFFERENT_EXTENSIONS_FIRST_CORRECT_STRING = "{\n"
+            + "    chars1: [a, b, c]\n"
+            + "    chars2: [d, e, f]\n"
+            + "    checked: false\n"
+            + "    default: null\n"
+            + "    id: 45\n"
+            + "    key1: value1\n"
+            + "    numbers1: [1, 2, 3, 4]\n"
+            + "    numbers2: [2, 3, 4, 5]\n"
+            + "    numbers3: [3, 4, 5]\n"
+            + "    setting1: Some value\n"
+            + "    setting2: 200\n"
+            + "    setting3: true\n"
+            + "}";
+    private static final String DIFFERENT_EXTENSIONS_SECOND_CORRECT_STRING = "{\n"
+            + "    chars1: [a, b, c]\n"
+            + "    chars2: false\n"
+            + "    checked: true\n"
+            + "    default: [value1, value2]\n"
+            + "    id: null\n"
+            + "    key2: value2\n"
+            + "    numbers1: [1, 2, 3, 4]\n"
+            + "    numbers2: [22, 33, 44, 55]\n"
+            + "    numbers4: [4, 5, 6]\n"
+            + "    obj1: {nestedKey=value, isNested=true}\n"
+            + "    setting1: Another value\n"
+            + "    setting2: 300\n"
+            + "    setting3: none\n"
+            + "}";
 
     @Test
     public void testJSONDefault() throws Exception {
@@ -147,14 +176,14 @@ public class DifferTest {
     }
 
     @Test
-    public void testBothEmptyJSON() throws Exception {
+    public void testBothEmptyJSON() {
         assertThatThrownBy(() -> Differ.generate(EMPTY_JSON_PATH, EMPTY_JSON_PATH))
                 .isInstanceOf(Exception.class)
                 .hasMessageContaining(Parser.BOTH_FILES_EMPTY);
     }
 
     @Test
-    public void testBothEmptyYAML() throws Exception {
+    public void testBothEmptyYAML() {
         assertThatThrownBy(() -> Differ.generate(EMPTY_YAML_PATH, EMPTY_YAML_PATH))
                 .isInstanceOf(Exception.class)
                 .hasMessageContaining(Parser.BOTH_FILES_EMPTY);
@@ -180,14 +209,14 @@ public class DifferTest {
     public void testUnknownFormatFirstPath() {
         assertThatThrownBy(() -> Differ.generate(UNKNOWN_FORMAT_PATH, FIRST_JSON_PATH_1))
                 .isInstanceOf(Exception.class)
-                .hasMessageContaining(Parser.DIFFERENT_EXTENSIONS_ERROR);
+                .hasMessageContaining(Parser.UNKNOWN_EXTENSION_ERROR);
     }
 
     @Test
     public void testUnknownFormatSecondPath() {
         assertThatThrownBy(() -> Differ.generate(EMPTY_YAML_PATH, UNKNOWN_FORMAT_PATH))
                 .isInstanceOf(Exception.class)
-                .hasMessageContaining(Parser.DIFFERENT_EXTENSIONS_ERROR);
+                .hasMessageContaining(Parser.UNKNOWN_EXTENSION_ERROR);
     }
 
     @Test
@@ -198,16 +227,14 @@ public class DifferTest {
     }
 
     @Test
-    public void testDifferentFormatYAMLJSON() {
-        assertThatThrownBy(() -> Differ.generate(FIRST_YAML_PATH_1, FIRST_JSON_PATH_1))
-                .isInstanceOf(Exception.class)
-                .hasMessageContaining(Parser.DIFFERENT_EXTENSIONS_ERROR);
+    public void testDifferentFormatYAMLJSON() throws Exception {
+        String result = Differ.generate(FIRST_YAML_PATH_1, FIRST_JSON_PATH_1);
+        assertThat(result).isEqualTo(DIFFERENT_EXTENSIONS_FIRST_CORRECT_STRING);
     }
 
     @Test
-    public void testDifferentFormatJSONYAML() {
-        assertThatThrownBy(() -> Differ.generate(FIRST_JSON_PATH_2, FIRST_YAML_PATH_2))
-                .isInstanceOf(Exception.class)
-                .hasMessageContaining(Parser.DIFFERENT_EXTENSIONS_ERROR);
+    public void testDifferentFormatJSONYAML() throws Exception {
+        String result = Differ.generate(FIRST_JSON_PATH_2, FIRST_YAML_PATH_2);
+        assertThat(result).isEqualTo(DIFFERENT_EXTENSIONS_SECOND_CORRECT_STRING);
     }
 }
