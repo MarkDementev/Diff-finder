@@ -4,47 +4,36 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class Differ {
-    private static List<String> extensionsList = new ArrayList<>(2);
     private static final String DEFAULT_FORMAT = "stylish";
-
-    //Метод ниже создан для тестирования, чтобы очищать поле extensionsList перед каждым запуском теста
-    //Создан потому, что в этом проекте используются static классы и методы
-    //Потому поле чистится c помощью @BeforeEach
-    //Но для инкапсуляции поле сделано private, и чистится через public метод ниже:
-    public static void cleanExtensionsList() {
-        extensionsList.clear();
-    }
 
     public static String generate(String firstFilePath, String secondFilePath) throws Exception {
         return generate(firstFilePath, secondFilePath, DEFAULT_FORMAT);
     }
 
     public static String generate(String firstFilePath, String secondFilePath, String format) throws Exception {
-        List<Map<String, Object>> parsedMapsList = new ArrayList<>();
-
         Map<String, Object> firstFileParsedMap = getData(firstFilePath);
         Map<String, Object> secondFileParsedMap = getData(secondFilePath);
 
-        Parser.checkIsEmptyBothFiles(extensionsList, firstFileParsedMap, secondFileParsedMap);
-
-        parsedMapsList.add(firstFileParsedMap);
-        parsedMapsList.add(secondFileParsedMap);
-
-        Map<String, String> keyDifferTypes = Tree.findDiff(parsedMapsList);
-        return Formatter.format(keyDifferTypes, parsedMapsList, format);
+        //Проработка 5-6-го комментариев. Радикально упростил метод ниже, что позволило убрать extensionsList
+        //и все связанные с ним проблемы и сложности.
+        Parser.checkIsEmptyBothFiles(firstFileParsedMap, secondFileParsedMap);
+        //Проработка 2-го комментария.
+        //Ранее на вход в findDiff был лист с 2-мя мапами, теперь они отправляются без листа.
+        Map<String, String> keyDifferTypes = Tree.findDiff(firstFileParsedMap, secondFileParsedMap);
+        //Проработка 2-го комментария.
+        //Т.к. теперь нет листа для мап, они также без него отправляются в метод ниже. Зачем они там вообще?
+        //Объяснение в комментарии в самом методе Formatter.format.
+        return Formatter.format(keyDifferTypes, firstFileParsedMap, secondFileParsedMap, format);
     }
 
     private static Map<String, Object> getData(String filePath) throws Exception {
         Path fileAbsolutePath = getAbsolutePath(filePath);
-        isFileExist(fileAbsolutePath);
+        checkFileExistance(fileAbsolutePath);
         String fileAbsolutePathString = pathToString(fileAbsolutePath);
         String fileExtension = findFileExtension(filePath);
-        extensionsList.add(fileExtension);
         return Parser.parseToMap(fileExtension, fileAbsolutePathString);
     }
 
@@ -52,7 +41,8 @@ public class Differ {
         return Paths.get(filePath).toAbsolutePath().normalize();
     }
 
-    private static void isFileExist(Path absoluteFilePath) throws IOException {
+    //Проработка 3-го комментария. Метод переименовал.
+    private static void checkFileExistance(Path absoluteFilePath) throws IOException {
         if (!Files.exists(absoluteFilePath)) {
             throw new IOException("'" + absoluteFilePath + "' does not exist.\nCheck it!");
         }
@@ -64,11 +54,10 @@ public class Differ {
 
     private static String findFileExtension(String filePath) throws Exception {
         String fileExtension = filePath.substring(filePath.lastIndexOf('.') + 1).toLowerCase();
-
-        if (fileExtension.equals(Parser.FILE_EXTENSIONS[2])) {
-            return Parser.FILE_EXTENSIONS[1];
-        }
-        Parser.checkFileExtension(fileExtension);
-        return fileExtension;
+        //Проработка 4-го комментария.
+        //"Преобразование" yaml в yml перенесено из этого метода в метод
+        //checkFileExtension внутри Parser. Теперь Differ находит fileExtension, а преобразование и проверка расширения
+        //на возможность парсинга - это уже забота только Parser-a посредством метода checkFileExtension.
+        return Parser.checkFileExtension(fileExtension);
     }
 }

@@ -1,6 +1,5 @@
 package hexlet.code;
 
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -11,10 +10,9 @@ public class Tree {
     public static final String ADDED_KEY = "added";
     private static final int[] PARSED_MAPS_SERIAL_NUMBERS = {1, 2};
 
-    public static Map<String, String> findDiff(List<Map<String, Object>> parsedMapsList) {
+    public static Map<String, String> findDiff(Map<String, Object> firstFileParsedMap,
+                                               Map<String, Object> secondFileParsedMap) {
         Map<String, String> keyDifferTypes = new TreeMap<>();
-        Map<String, Object> firstFileParsedMap = parsedMapsList.get(0);
-        Map<String, Object> secondFileParsedMap = parsedMapsList.get(1);
 
         if (firstFileParsedMap == null) {
             return formKeyDifferMapWhenOneInputMapNull(secondFileParsedMap, keyDifferTypes,

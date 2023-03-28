@@ -1,6 +1,5 @@
 package hexlet.code;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -127,11 +126,6 @@ public class DifferTest {
             + "    setting2: 300\n"
             + "    setting3: none\n"
             + "}";
-
-    @BeforeEach
-    public final void cleanExtensionsList() {
-        Differ.cleanExtensionsList();
-    }
 
     @Test
     public void testJSONDefault() throws Exception {

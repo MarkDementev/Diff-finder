@@ -1,7 +1,5 @@
 package hexlet.code;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,10 +15,20 @@ public class Parser {
     private static final String NO_FILE_EXTENSION_WARNING = "There is no file extension!!!";
     private static final String[] EMPTY_STATUSES = {"Empty", "Not empty"};
 
-    public static void checkFileExtension(String fileExtension) throws Exception {
-        if (!fileExtension.equals(FILE_EXTENSIONS[0]) && !fileExtension.equals(FILE_EXTENSIONS[1])) {
+    public static String checkFileExtension(String fileExtension) throws Exception {
+        //Создал эту переменную для операций с аргументом метода, т.к. в последнем комментарии прошлого проекта
+        //ты рекомендовал не менять аргументы метода, а создавать промежуточные переменные, что я и сделал.
+        String checkingFileExtension = fileExtension;
+
+        //А вот и операция, для которой промежуточная переменная. Ранее эта операция была в Differ, теперь она тут.
+        if (checkingFileExtension.equals(FILE_EXTENSIONS[2])) {
+            checkingFileExtension = FILE_EXTENSIONS[1];
+        }
+
+        if (!checkingFileExtension.equals(FILE_EXTENSIONS[0]) && !checkingFileExtension.equals(FILE_EXTENSIONS[1])) {
             throw new Exception(UNKNOWN_EXTENSION_ERROR);
         }
+        return checkingFileExtension;
     }
 
     public static Map<String, Object> parseToMap(String filesExtension, String filePath)
@@ -32,41 +40,21 @@ public class Parser {
         };
     }
 
-    public static void checkIsEmptyBothFiles(List<String> extensionsList,
-                                         Map<String, Object> firstFileParsedMap,
-                                         Map<String, Object> secondFileParsedMap) throws Exception {
-        String[] isEmptyArray = formIsEmptyArray(extensionsList, firstFileParsedMap, secondFileParsedMap);
+    public static void checkIsEmptyBothFiles(Map<String, Object> firstFileParsedMap,
+                                             Map<String, Object> secondFileParsedMap) throws Exception {
+        String[] checkEmptyArray = {EMPTY_STATUSES[1], EMPTY_STATUSES[1]};
 
-        if (isEmptyArray[0].equals(EMPTY_STATUSES[0]) && isEmptyArray[1].equals(EMPTY_STATUSES[0])) {
+        if (firstFileParsedMap == null || firstFileParsedMap.size() == 0) {
+            checkEmptyArray[0] = EMPTY_STATUSES[0];
+        }
+
+        if (secondFileParsedMap == null || secondFileParsedMap.size() == 0) {
+            checkEmptyArray[1] = EMPTY_STATUSES[0];
+        }
+
+        if (checkEmptyArray[0].equals(EMPTY_STATUSES[0]) && checkEmptyArray[1].equals(EMPTY_STATUSES[0])) {
             throw new Exception(BOTH_FILES_EMPTY);
         }
-    }
-
-    public static String[] formIsEmptyArray(List<String> extensionsList,
-                                            Map<String, Object> firstFileParsedMap,
-                                            Map<String, Object> secondFileParsedMap) {
-        String[] isEmptyArray = new String[2];
-        List<Map<String, Object>> parsedMapsList = new ArrayList<>();
-
-        parsedMapsList.add(firstFileParsedMap);
-        parsedMapsList.add(secondFileParsedMap);
-
-        for (int i = 0; i < parsedMapsList.size(); i++) {
-            if (extensionsList.get(i).equals(FILE_EXTENSIONS[0])) {
-                if (parsedMapsList.get(i).size() == 0) {
-                    isEmptyArray[i] = EMPTY_STATUSES[0];
-                } else {
-                    isEmptyArray[i] = EMPTY_STATUSES[1];
-                }
-            } else {
-                if (parsedMapsList.get(i) == null) {
-                    isEmptyArray[i] = EMPTY_STATUSES[0];
-                } else {
-                    isEmptyArray[i] = EMPTY_STATUSES[1];
-                }
-            }
-        }
-        return isEmptyArray;
     }
 
     private static Map<String, Object> parseFromJSON(String filePath) throws JsonProcessingException {
