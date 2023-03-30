@@ -3,6 +3,8 @@ package hexlet.code;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,33 +29,39 @@ public class DifferTest {
             "./src/test/resources/fixtures.YAML-files/this-file-is-fantasy.yml";
     private static final String UNKNOWN_FORMAT_PATH =
             "./src/test/resources/fixtures.OTH-files/unknownFormatPath.oth";
+    private static final String STYLISH_FORMAT = "stylish";
     private static final String PLAIN_FORMAT = "plain";
     private static final String JSON_FORMAT = "json";
-    private static final String DEFAULT_CORRECT_STRING = "{\n"
-            + "    chars1: [a, b, c]\n"
-            + "  - chars2: [d, e, f]\n"
-            + "  + chars2: false\n"
-            + "  - checked: false\n"
-            + "  + checked: true\n"
-            + "  - default: null\n"
-            + "  + default: [value1, value2]\n"
-            + "  - id: 45\n"
-            + "  + id: null\n"
-            + "  - key1: value1\n"
-            + "  + key2: value2\n"
-            + "    numbers1: [1, 2, 3, 4]\n"
-            + "  - numbers2: [2, 3, 4, 5]\n"
-            + "  + numbers2: [22, 33, 44, 55]\n"
-            + "  - numbers3: [3, 4, 5]\n"
-            + "  + numbers4: [4, 5, 6]\n"
-            + "  + obj1: {nestedKey=value, isNested=true}\n"
-            + "  - setting1: Some value\n"
-            + "  + setting1: Another value\n"
-            + "  - setting2: 200\n"
-            + "  + setting2: 300\n"
-            + "  - setting3: true\n"
-            + "  + setting3: none\n"
-            + "}";
+    private static final String DEFAULT_CORRECT_STRING_PATH =
+            "./src/test/resources/fixtures.Correct-strings/default.txt";
+
+    private static final String DEFAULT_CORRECT_STRING = """
+            {
+                chars1: [a, b, c]
+              - chars2: [d, e, f]
+              + chars2: false
+              - checked: false
+              + checked: true
+              - default: null
+              + default: [value1, value2]
+              - id: 45
+              + id: null
+              - key1: value1
+              + key2: value2
+                numbers1: [1, 2, 3, 4]
+              - numbers2: [2, 3, 4, 5]
+              + numbers2: [22, 33, 44, 55]
+              - numbers3: [3, 4, 5]
+              + numbers4: [4, 5, 6]
+              + obj1: {nestedKey=value, isNested=true}
+              - setting1: Some value
+              + setting1: Another value
+              - setting2: 200
+              + setting2: 300
+              - setting3: true
+              + setting3: none
+            }""";
+
     private static final String PLAIN_CORRECT_STRING =
             "Property 'chars2' was updated. From [complex value] to false\n"
                     + "Property 'checked' was updated. From false to true\n"
@@ -127,15 +135,34 @@ public class DifferTest {
             + "    setting3: none\n"
             + "}";
 
+    private static String getCorrectResultString(String correctStringPath) throws IOException {
+        Path correctStringAbsolutePath = Paths.get(correctStringPath).toAbsolutePath().normalize();
+        return Files.readString(correctStringAbsolutePath);
+    }
+
     @Test
     public void testJSONDefault() throws Exception {
         String result = Differ.generate(FIRST_JSON_PATH_1, FIRST_JSON_PATH_2);
+        //String correctResult = getCorrectResultString(DEFAULT_CORRECT_STRING_PATH);
         assertThat(result).isEqualTo(DEFAULT_CORRECT_STRING);
+        //assertThat(result).isEqualTo(correctResult);
     }
 
     @Test
     public void testYAMLDefault() throws Exception {
         String result = Differ.generate(FIRST_YAML_PATH_1, FIRST_YAML_PATH_2);
+        assertThat(result).isEqualTo(DEFAULT_CORRECT_STRING);
+    }
+
+    @Test
+    public void testJSONFormatStylish() throws Exception {
+        String result = Differ.generate(FIRST_JSON_PATH_1, FIRST_JSON_PATH_2, STYLISH_FORMAT);
+        assertThat(result).isEqualTo(DEFAULT_CORRECT_STRING);
+    }
+
+    @Test
+    public void testYAMLFormatStylish() throws Exception {
+        String result = Differ.generate(FIRST_YAML_PATH_1, FIRST_YAML_PATH_2, STYLISH_FORMAT);
         assertThat(result).isEqualTo(DEFAULT_CORRECT_STRING);
     }
 
