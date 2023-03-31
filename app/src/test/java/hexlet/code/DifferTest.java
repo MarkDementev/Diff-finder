@@ -135,17 +135,21 @@ public class DifferTest {
             + "    setting3: none\n"
             + "}";
 
+    //Читаю строку из фикстуры
     private static String getCorrectResultString(String correctStringPath) throws IOException {
         Path correctStringAbsolutePath = Paths.get(correctStringPath).toAbsolutePath().normalize();
-        return Files.readString(correctStringAbsolutePath);
+        return Files.readString(correctStringAbsolutePath).trim();
     }
 
+    //Использую эту строку в тесте, тест падает.
+    //Закомменченная строка в теле теста - это работаюшая проверка.
+    //DEFAULT_CORRECT_STRING - строка, полностью аналогичная строке в фикстуре default.txt.
     @Test
     public void testJSONDefault() throws Exception {
         String result = Differ.generate(FIRST_JSON_PATH_1, FIRST_JSON_PATH_2);
-        //String correctResult = getCorrectResultString(DEFAULT_CORRECT_STRING_PATH);
-        assertThat(result).isEqualTo(DEFAULT_CORRECT_STRING);
-        //assertThat(result).isEqualTo(correctResult);
+        String correctResult = getCorrectResultString(DEFAULT_CORRECT_STRING_PATH);
+        //assertThat(result).isEqualTo(DEFAULT_CORRECT_STRING);
+        assertThat(result).isEqualTo(correctResult);
     }
 
     @Test
