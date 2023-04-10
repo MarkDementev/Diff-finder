@@ -17,15 +17,8 @@ public class Differ {
         Map<String, Object> firstFileParsedMap = getData(firstFilePath);
         Map<String, Object> secondFileParsedMap = getData(secondFilePath);
 
-        //Проработка 5-6-го комментариев. Радикально упростил метод ниже, что позволило убрать extensionsList
-        //и все связанные с ним проблемы и сложности.
         Parser.checkIsEmptyBothFiles(firstFileParsedMap, secondFileParsedMap);
-        //Проработка 2-го комментария.
-        //Ранее на вход в findDiff был лист с 2-мя мапами, теперь они отправляются без листа.
         Map<String, String> keyDifferTypes = Tree.findDiff(firstFileParsedMap, secondFileParsedMap);
-        //Проработка 2-го комментария.
-        //Т.к. теперь нет листа для мап, они также без него отправляются в метод ниже. Зачем они там вообще?
-        //Объяснение в комментарии в самом методе Formatter.format.
         return Formatter.format(keyDifferTypes, firstFileParsedMap, secondFileParsedMap, format);
     }
 
@@ -54,10 +47,6 @@ public class Differ {
 
     private static String findFileExtension(String filePath) throws Exception {
         String fileExtension = filePath.substring(filePath.lastIndexOf('.') + 1).toLowerCase();
-        //Проработка 4-го комментария.
-        //"Преобразование" yaml в yml перенесено из этого метода в метод
-        //checkFileExtension внутри Parser. Теперь Differ находит fileExtension, а преобразование и проверка расширения
-        //на возможность парсинга - это уже забота только Parser-a посредством метода checkFileExtension.
         return Parser.checkFileExtension(fileExtension);
     }
 }

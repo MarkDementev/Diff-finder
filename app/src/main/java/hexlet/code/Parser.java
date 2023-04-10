@@ -16,11 +16,8 @@ public class Parser {
     private static final String[] EMPTY_STATUSES = {"Empty", "Not empty"};
 
     public static String checkFileExtension(String fileExtension) throws Exception {
-        //Создал эту переменную для операций с аргументом метода, т.к. в последнем комментарии прошлого проекта
-        //ты рекомендовал не менять аргументы метода, а создавать промежуточные переменные, что я и сделал.
         String checkingFileExtension = fileExtension;
 
-        //А вот и операция, для которой промежуточная переменная. Ранее эта операция была в Differ, теперь она тут.
         if (checkingFileExtension.equals(FILE_EXTENSIONS[2])) {
             checkingFileExtension = FILE_EXTENSIONS[1];
         }

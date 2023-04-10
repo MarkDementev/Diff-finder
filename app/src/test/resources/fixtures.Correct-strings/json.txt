@@ -1,0 +1,1 @@
+{"chars1":"unchanged","chars2":"updated","checked":"updated","default":"updated","id":"updated","key1":"deleted","key2":"added","numbers1":"unchanged","numbers2":"updated","numbers3":"deleted","numbers4":"added","obj1":"added","setting1":"updated","setting2":"updated","setting3":"updated"}

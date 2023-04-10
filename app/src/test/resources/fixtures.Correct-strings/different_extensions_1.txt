@@ -1,0 +1,14 @@
+{
+    chars1: [a, b, c]
+    chars2: [d, e, f]
+    checked: false
+    default: null
+    id: 45
+    key1: value1
+    numbers1: [1, 2, 3, 4]
+    numbers2: [2, 3, 4, 5]
+    numbers3: [3, 4, 5]
+    setting1: Some value
+    setting2: 200
+    setting3: true
+}
