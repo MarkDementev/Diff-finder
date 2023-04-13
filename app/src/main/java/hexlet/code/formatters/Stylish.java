@@ -5,30 +5,30 @@ import hexlet.code.Tree;
 import java.util.Map;
 
 public class Stylish {
-    public static String formStylishResult(Map<String, String> keyDifferTypes,
-                                                   Map<String, Object> firstFileParsedMap,
-                                                   Map<String, Object> secondFileParsedMap) {
+    public static String formStylishResult(Map<String, Object[]> diffMap) {
         StringBuilder resultString = new StringBuilder("{\n");
 
-        for (Map.Entry<String, String> element : keyDifferTypes.entrySet()) {
-            String elementKey = element.getKey();
-            String elementValue = element.getValue();
+        for (Map.Entry<String, Object[]> keyWithTypeAndValue : diffMap.entrySet()) {
+            String elementKey = keyWithTypeAndValue.getKey();
+            Object[] keyTypeAndValueArray = keyWithTypeAndValue.getValue();
+            String keyType = String.valueOf(keyTypeAndValueArray[0]);
+            Object value = keyTypeAndValueArray[1];
 
-            switch (elementValue) {
+            switch (keyType) {
                 case Tree.UNCHANGED_KEY ->
                         resultString.append("    ").append(elementKey)
-                                .append(": ").append(firstFileParsedMap.get(elementKey));
+                                .append(": ").append(value);
                 case Tree.DELETED_KEY ->
                         resultString.append("  - ").append(elementKey)
-                                .append(": ").append(firstFileParsedMap.get(elementKey));
+                                .append(": ").append(value);
                 case Tree.UPDATED_KEY ->
                         resultString.append("  - ").append(elementKey)
-                                .append(": ").append(firstFileParsedMap.get(elementKey))
+                                .append(": ").append(value)
                                 .append("\n  + ").append(elementKey)
-                                .append(": ").append(secondFileParsedMap.get(elementKey));
+                                .append(": ").append(keyTypeAndValueArray[2]);
                 default ->
                         resultString.append("  + ").append(elementKey)
-                                .append(": ").append(secondFileParsedMap.get(elementKey));
+                                .append(": ").append(value);
             }
             resultString.append("\n");
         }

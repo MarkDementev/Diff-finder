@@ -18,8 +18,8 @@ public class Differ {
         Map<String, Object> secondFileParsedMap = getData(secondFilePath);
 
         Parser.checkIsEmptyBothFiles(firstFileParsedMap, secondFileParsedMap);
-        Map<String, String> keyDifferTypes = Tree.findDiff(firstFileParsedMap, secondFileParsedMap);
-        return Formatter.format(keyDifferTypes, firstFileParsedMap, secondFileParsedMap, format);
+        Map<String, Object[]> diffMap = Tree.findDiff(firstFileParsedMap, secondFileParsedMap);
+        return Formatter.format(diffMap, format);
     }
 
     private static Map<String, Object> getData(String filePath) throws Exception {

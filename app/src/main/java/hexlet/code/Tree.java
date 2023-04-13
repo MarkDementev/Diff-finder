@@ -1,6 +1,8 @@
 package hexlet.code;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 
 public class Tree {
@@ -8,52 +10,67 @@ public class Tree {
     public static final String DELETED_KEY = "deleted";
     public static final String UPDATED_KEY = "updated";
     public static final String ADDED_KEY = "added";
-    private static final int[] PARSED_MAPS_SERIAL_NUMBERS = {1, 2};
+    private static final String SECOND_MAP_MARK = "THIS_IS_SECOND_MAP_KEY/";
 
-    public static Map<String, String> findDiff(Map<String, Object> firstFileParsedMap,
-                                               Map<String, Object> secondFileParsedMap) {
-        Map<String, String> keyDifferTypes = new TreeMap<>();
-
-        if (firstFileParsedMap == null) {
-            return formKeyDifferMapWhenOneInputMapNull(secondFileParsedMap, keyDifferTypes,
-                    PARSED_MAPS_SERIAL_NUMBERS[0]);
-        } else if (secondFileParsedMap == null) {
-            return formKeyDifferMapWhenOneInputMapNull(firstFileParsedMap, keyDifferTypes,
-                    PARSED_MAPS_SERIAL_NUMBERS[1]);
-        }
-
-        for (Map.Entry<String, Object> firstMapElement : firstFileParsedMap.entrySet()) {
-            String firstMapElementKey = firstMapElement.getKey();
-            Object secondMapValueByFirstMapElementKey = secondFileParsedMap.get(firstMapElementKey);
-
-            if (secondFileParsedMap.containsKey(firstMapElementKey)
-                    && secondMapValueByFirstMapElementKey.equals(firstMapElement.getValue())) {
-                keyDifferTypes.put(firstMapElementKey, UNCHANGED_KEY);
-            } else if (!secondFileParsedMap.containsKey(firstMapElementKey)) {
-                keyDifferTypes.put(firstMapElementKey, DELETED_KEY);
-            } else {
-                keyDifferTypes.put(firstMapElementKey, UPDATED_KEY);
-            }
-        }
-
-        for (String secondMapElementKey : secondFileParsedMap.keySet()) {
-            if (!firstFileParsedMap.containsKey(secondMapElementKey)) {
-                keyDifferTypes.put(secondMapElementKey, ADDED_KEY);
-            }
-        }
-        return keyDifferTypes;
+    public static Map<String, Object[]> findDiff(Map<String, Object> firstFileParsedMap,
+                                                 Map<String, Object> secondFileParsedMap) {
+        Map<String, Object> unitedMap = formUnitedMap(firstFileParsedMap, secondFileParsedMap);
+        return formDiffMap(unitedMap);
     }
 
-    private static Map<String, String> formKeyDifferMapWhenOneInputMapNull(Map<String, Object> noNullMap,
-                                                                           Map<String, String> keyDifferTypes,
-                                                                           int nullMapSerialNumber) {
-        for (Map.Entry<String, Object> element : noNullMap.entrySet()) {
-            if (nullMapSerialNumber == PARSED_MAPS_SERIAL_NUMBERS[0]) {
-                keyDifferTypes.put(element.getKey(), ADDED_KEY);
-            } else {
-                keyDifferTypes.put(element.getKey(), DELETED_KEY);
+    private static Map<String, Object> formUnitedMap(Map<String, Object> firstFileParsedMap,
+                                                     Map<String, Object> secondFileParsedMap) {
+        Map<String, Object> unitedMap = Objects.requireNonNullElseGet(firstFileParsedMap, HashMap::new);
+
+        if (secondFileParsedMap != null) {
+            for (Map.Entry<String, Object> secondMapElement : secondFileParsedMap.entrySet()) {
+                String moddedKeyFromSecondMap = SECOND_MAP_MARK + secondMapElement.getKey();
+                Object valueFromSecondMap = secondMapElement.getValue();
+
+                unitedMap.put(moddedKeyFromSecondMap, valueFromSecondMap);
             }
         }
-        return keyDifferTypes;
+        return unitedMap;
+    }
+
+    private static Map<String, Object[]> formDiffMap(Map<String, Object> unitedMap) {
+        Map<String, Object[]> diffMap = new TreeMap<>();
+
+        for (Map.Entry<String, Object> unitedMapElement : unitedMap.entrySet()) {
+            String unitedMapElementKey = unitedMapElement.getKey();
+            Object unitedMapElementValue = unitedMapElement.getValue();
+            String pureUnitedMapElementKey = null;
+            boolean isKeyFromSecondMap = false;
+            Object[] intoDiffMapArray = new Object[3];
+
+            if (unitedMapElementKey.contains(SECOND_MAP_MARK)) {
+                isKeyFromSecondMap = true;
+                pureUnitedMapElementKey = unitedMapElementKey.substring(SECOND_MAP_MARK.length());
+            }
+
+            if (!isKeyFromSecondMap) {
+                intoDiffMapArray[0] = DELETED_KEY;
+                intoDiffMapArray[1] = unitedMapElementValue;
+                diffMap.put(unitedMapElementKey, intoDiffMapArray);
+            } else if (!diffMap.containsKey(pureUnitedMapElementKey)) {
+                intoDiffMapArray[0] = ADDED_KEY;
+                intoDiffMapArray[1] = unitedMapElementValue;
+                diffMap.put(pureUnitedMapElementKey, intoDiffMapArray);
+            } else {
+                Object[] valueArrayFromDiffMap = diffMap.get(pureUnitedMapElementKey);
+                Object valueFromValueArray = valueArrayFromDiffMap[1];
+
+                if (!unitedMapElementValue.equals(valueFromValueArray)) {
+                    intoDiffMapArray[0] = UPDATED_KEY;
+                    intoDiffMapArray[1] = valueFromValueArray;
+                    intoDiffMapArray[2] = unitedMapElementValue;
+                } else {
+                    intoDiffMapArray[0] = UNCHANGED_KEY;
+                    intoDiffMapArray[1] = unitedMapElementValue;
+                }
+                diffMap.put(pureUnitedMapElementKey, intoDiffMapArray);
+            }
+        }
+        return diffMap;
     }
 }

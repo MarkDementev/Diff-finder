@@ -6,6 +6,7 @@ import hexlet.code.Tree;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Plain {
     private static  final String PROPERTY_TEXT = "Property '";
@@ -15,43 +16,58 @@ public class Plain {
     private static  final String ADDED_TEXT = "' was added with value: ";
     private static  final String COMPLEX_TEXT = "[complex value]";
 
-    public static String formPlainResult(Map<String, String> keyDifferTypes,
-                                                 Map<String, Object> firstFileParsedMap,
-                                                 Map<String, Object> secondFileParsedMap) {
+    public static String formPlainResult(Map<String, Object[]> diffMap) {
+        Map<String, Object[]> diffMapWithFormattedValues = formatMapElements(diffMap);
         StringBuilder resultString = new StringBuilder();
-        Map<String, Object> firstPreparedMap = formatMapElements(firstFileParsedMap);
-        Map<String, Object> secondPreparedMap = formatMapElements(secondFileParsedMap);
 
-        for (Map.Entry<String, String> element : keyDifferTypes.entrySet()) {
-            String elementKey = element.getKey();
-            String elementValue = element.getValue();
-            Object firstFileValueByElementKey = firstPreparedMap.get(elementKey);
-            Object secondFileValueByElementKey = secondPreparedMap.get(elementKey);
+        for (Map.Entry<String, Object[]> mapElement : diffMapWithFormattedValues.entrySet()) {
+            String fileKey = mapElement.getKey();
+            Object[] mapElementValuesArray = mapElement.getValue();
+            String diffKey = mapElementValuesArray[0].toString();
 
-            if (elementValue.equals(Tree.DELETED_KEY)) {
-                resultString.append(PROPERTY_TEXT).append(elementKey).append(REMOVED_TEXT);
-            } else if (elementValue.equals(Tree.UPDATED_KEY)) {
-                resultString.append(PROPERTY_TEXT).append(elementKey)
-                        .append(UPDATED_TEXT).append(firstFileValueByElementKey)
-                        .append(UPDATED_TO_TEXT).append(secondFileValueByElementKey).append("\n");
-            } else if (elementValue.equals(Tree.ADDED_KEY)) {
-                resultString.append(PROPERTY_TEXT).append(elementKey)
-                        .append(ADDED_TEXT).append(secondFileValueByElementKey).append("\n");
+            if (diffKey.equals(Tree.DELETED_KEY)) {
+                resultString.append(PROPERTY_TEXT).append(fileKey).append(REMOVED_TEXT);
+            } else if (diffKey.equals(Tree.UPDATED_KEY)) {
+                resultString.append(PROPERTY_TEXT).append(fileKey)
+                        .append(UPDATED_TEXT).append(mapElementValuesArray[1])
+                        .append(UPDATED_TO_TEXT).append(mapElementValuesArray[2]).append("\n");
+            } else if (diffKey.equals(Tree.ADDED_KEY)) {
+                resultString.append(PROPERTY_TEXT).append(fileKey)
+                        .append(ADDED_TEXT).append(mapElementValuesArray[1]).append("\n");
             }
         }
         return resultString.toString().trim();
     }
 
-    private static Map<String, Object> formatMapElements(Map<String, Object> inputMap) {
-        for (Map.Entry<String, Object> element : inputMap.entrySet()) {
-            Object elementValueClass = element.getValue().getClass();
+    private static Map<String, Object[]> formatMapElements(Map<String, Object[]> diffMap) {
+        Map<String, Object[]> diffMapWithFormattedValues = new TreeMap<>();
 
-            if (elementValueClass == ArrayList.class || elementValueClass == LinkedHashMap.class) {
-                element.setValue(COMPLEX_TEXT);
-            } else if (elementValueClass == String.class && !element.getValue().equals(Parser.NULL_STRING_TEXT)) {
-                element.setValue("'" + element.getValue() + "'");
+        for (Map.Entry<String, Object[]> mapElement : diffMap.entrySet()) {
+            String mapElementFileKey = mapElement.getKey();
+            Object[] mapElementValuesArray = mapElement.getValue();
+            String mapElementDiffKey = mapElementValuesArray[0].toString();
+            Object[] arrayByAddValues = new Object[3];
+            arrayByAddValues[0] = mapElementDiffKey;
+            int fromFilesValuesCount = 1;
+
+            if (mapElementDiffKey.equals(Tree.UPDATED_KEY)) {
+                fromFilesValuesCount = 2;
             }
+
+            for (int i = 1; i <= fromFilesValuesCount; i++) {
+                Object mapElementValue = mapElementValuesArray[i].getClass();
+
+                if (mapElementValue == ArrayList.class || mapElementValue == LinkedHashMap.class) {
+                    arrayByAddValues[i] = COMPLEX_TEXT;
+                } else if (mapElementValue == String.class
+                        && !mapElementValuesArray[i].equals(Parser.NULL_STRING_TEXT)) {
+                    arrayByAddValues[i] = "'" + mapElementValuesArray[i] + "'";
+                } else {
+                    arrayByAddValues[i] = mapElementValuesArray[i];
+                }
+            }
+            diffMapWithFormattedValues.put(mapElementFileKey, arrayByAddValues);
         }
-        return inputMap;
+        return diffMapWithFormattedValues;
     }
 }

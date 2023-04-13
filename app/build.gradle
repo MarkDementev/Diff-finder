@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id "se.patrikerdes.use-latest-versions" version "0.2.18"
-    id "com.github.ben-manes.versions" version "0.45.0"
+    id "com.github.ben-manes.versions" version "0.46.0"
     id 'checkstyle'
     id 'jacoco'
     id 'com.adarshr.test-logger' version '3.2.0'
@@ -22,11 +22,11 @@ dependencies {
     )
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
 
-    annotationProcessor 'info.picocli:picocli-codegen:4.7.1'
+    annotationProcessor 'info.picocli:picocli-codegen:4.7.2'
 
-    implementation 'info.picocli:picocli:4.7.1'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.14.2'
+    implementation 'info.picocli:picocli:4.7.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0-rc2'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.0-rc2'
 }
 
 test {
