@@ -10,7 +10,6 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 public class Parser {
     public static final String[] FILE_EXTENSIONS = {"json", "yml", "yaml"};
     public static final String UNKNOWN_EXTENSION_ERROR = "There is unknown filename extension.\nCheck input files!";
-    public static final String NULL_STRING_TEXT = "null";
     public static final String BOTH_FILES_EMPTY = "Both files are empty!";
     private static final String NO_FILE_EXTENSION_WARNING = "There is no file extension!!!";
     private static final String[] EMPTY_STATUSES = {"Empty", "Not empty"};
@@ -58,26 +57,13 @@ public class Parser {
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> jSONMap = mapper.readValue(filePath, new TypeReference<>() { });
 
-        return makeNullsToString(jSONMap);
+        return jSONMap;
     }
 
     private static Map<String, Object> parseFromYAML(String filePath) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         Map<String, Object> yAMLMap = mapper.readValue(filePath, new TypeReference<>() { });
 
-        return makeNullsToString(yAMLMap);
-    }
-
-    private static Map<String, Object> makeNullsToString(Map<String, Object> map) {
-        if (map == null) {
-            return null;
-        }
-
-        for (Map.Entry<String, Object> element : map.entrySet()) {
-            if (element.getValue() == null) {
-                element.setValue(NULL_STRING_TEXT);
-            }
-        }
-        return map;
+        return yAMLMap;
     }
 }

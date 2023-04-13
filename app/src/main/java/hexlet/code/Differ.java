@@ -22,6 +22,13 @@ public class Differ {
         return Formatter.format(diffMap, format);
     }
 
+    public static Boolean isEqual(Object value1, Object value2) {
+        if (value1 == null || value2 == null) {
+            return value1 == value2;
+        }
+        return value1.equals(value2);
+    }
+
     private static Map<String, Object> getData(String filePath) throws Exception {
         Path fileAbsolutePath = getAbsolutePath(filePath);
         checkFileExistance(fileAbsolutePath);
@@ -34,7 +41,6 @@ public class Differ {
         return Paths.get(filePath).toAbsolutePath().normalize();
     }
 
-    //Проработка 3-го комментария. Метод переименовал.
     private static void checkFileExistance(Path absoluteFilePath) throws IOException {
         if (!Files.exists(absoluteFilePath)) {
             throw new IOException("'" + absoluteFilePath + "' does not exist.\nCheck it!");

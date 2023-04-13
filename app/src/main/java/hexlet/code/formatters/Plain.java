@@ -1,6 +1,5 @@
 package hexlet.code.formatters;
 
-import hexlet.code.Parser;
 import hexlet.code.Tree;
 
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ public class Plain {
             String mapElementFileKey = mapElement.getKey();
             Object[] mapElementValuesArray = mapElement.getValue();
             String mapElementDiffKey = mapElementValuesArray[0].toString();
-            Object[] arrayByAddValues = new Object[3];
+            Object[] arrayByAddValues = new Object[Tree.NEEDED_VALUES_ARRAY_SIZE];
             arrayByAddValues[0] = mapElementDiffKey;
             int fromFilesValuesCount = 1;
 
@@ -55,12 +54,15 @@ public class Plain {
             }
 
             for (int i = 1; i <= fromFilesValuesCount; i++) {
-                Object mapElementValue = mapElementValuesArray[i].getClass();
+                Object mapElementValue = null;
+
+                if (mapElementValuesArray[i] != null) {
+                    mapElementValue = mapElementValuesArray[i].getClass();
+                }
 
                 if (mapElementValue == ArrayList.class || mapElementValue == LinkedHashMap.class) {
                     arrayByAddValues[i] = COMPLEX_TEXT;
-                } else if (mapElementValue == String.class
-                        && !mapElementValuesArray[i].equals(Parser.NULL_STRING_TEXT)) {
+                } else if (mapElementValue == String.class) {
                     arrayByAddValues[i] = "'" + mapElementValuesArray[i] + "'";
                 } else {
                     arrayByAddValues[i] = mapElementValuesArray[i];

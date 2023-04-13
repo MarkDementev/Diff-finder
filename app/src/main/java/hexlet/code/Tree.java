@@ -10,7 +10,9 @@ public class Tree {
     public static final String DELETED_KEY = "deleted";
     public static final String UPDATED_KEY = "updated";
     public static final String ADDED_KEY = "added";
+    public static final int NEEDED_VALUES_ARRAY_SIZE = 3;
     private static final String SECOND_MAP_MARK = "THIS_IS_SECOND_MAP_KEY/";
+    private static final String NO_KEY_WARNING = "There is no differ key!";
 
     public static Map<String, Object[]> findDiff(Map<String, Object> firstFileParsedMap,
                                                  Map<String, Object> secondFileParsedMap) {
@@ -40,37 +42,49 @@ public class Tree {
             String unitedMapElementKey = unitedMapElement.getKey();
             Object unitedMapElementValue = unitedMapElement.getValue();
             String pureUnitedMapElementKey = null;
-            boolean isKeyFromSecondMap = false;
-            Object[] intoDiffMapArray = new Object[3];
+            Object[] intoDiffMapArray;
 
             if (unitedMapElementKey.contains(SECOND_MAP_MARK)) {
-                isKeyFromSecondMap = true;
                 pureUnitedMapElementKey = unitedMapElementKey.substring(SECOND_MAP_MARK.length());
             }
 
-            if (!isKeyFromSecondMap) {
-                intoDiffMapArray[0] = DELETED_KEY;
-                intoDiffMapArray[1] = unitedMapElementValue;
+            if (pureUnitedMapElementKey == null) {
+                intoDiffMapArray = formIntoDiffMapArray(DELETED_KEY, unitedMapElementValue, null);
                 diffMap.put(unitedMapElementKey, intoDiffMapArray);
             } else if (!diffMap.containsKey(pureUnitedMapElementKey)) {
-                intoDiffMapArray[0] = ADDED_KEY;
-                intoDiffMapArray[1] = unitedMapElementValue;
+                intoDiffMapArray = formIntoDiffMapArray(ADDED_KEY, unitedMapElementValue, null);
                 diffMap.put(pureUnitedMapElementKey, intoDiffMapArray);
             } else {
                 Object[] valueArrayFromDiffMap = diffMap.get(pureUnitedMapElementKey);
                 Object valueFromValueArray = valueArrayFromDiffMap[1];
 
-                if (!unitedMapElementValue.equals(valueFromValueArray)) {
-                    intoDiffMapArray[0] = UPDATED_KEY;
-                    intoDiffMapArray[1] = valueFromValueArray;
-                    intoDiffMapArray[2] = unitedMapElementValue;
+                if (!Differ.isEqual(unitedMapElementValue, valueFromValueArray)) {
+                    intoDiffMapArray = formIntoDiffMapArray(UPDATED_KEY, unitedMapElementValue, valueFromValueArray);
                 } else {
-                    intoDiffMapArray[0] = UNCHANGED_KEY;
-                    intoDiffMapArray[1] = unitedMapElementValue;
+                    intoDiffMapArray = formIntoDiffMapArray(UNCHANGED_KEY, unitedMapElementValue, valueFromValueArray);
                 }
                 diffMap.put(pureUnitedMapElementKey, intoDiffMapArray);
             }
         }
         return diffMap;
+    }
+
+    private static Object[] formIntoDiffMapArray(String formArrayForKey,
+                                                 Object unitedMapElementValue,
+                                                 Object valueFromValueArray) {
+        Object[] intoDiffMapArray = new Object[NEEDED_VALUES_ARRAY_SIZE];
+        intoDiffMapArray[0] = formArrayForKey;
+
+        switch (formArrayForKey) {
+            case DELETED_KEY, ADDED_KEY, UNCHANGED_KEY -> {
+                intoDiffMapArray[1] = unitedMapElementValue;
+            }
+            case UPDATED_KEY -> {
+                intoDiffMapArray[1] = valueFromValueArray;
+                intoDiffMapArray[2] = unitedMapElementValue;
+            }
+            default -> throw new RuntimeException(NO_KEY_WARNING);
+        }
+        return intoDiffMapArray;
     }
 }
