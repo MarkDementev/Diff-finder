@@ -32,9 +32,9 @@ public class Differ {
     private static Map<String, Object> getData(String filePath) throws Exception {
         Path fileAbsolutePath = getAbsolutePath(filePath);
         checkFileExistance(fileAbsolutePath);
-        String fileAbsolutePathString = pathToString(fileAbsolutePath);
+        String fileData = pathToData(fileAbsolutePath);
         String fileExtension = findFileExtension(filePath);
-        return Parser.parseToMap(fileExtension, fileAbsolutePathString);
+        return Parser.parseToMap(fileExtension, fileData);
     }
 
     private static Path getAbsolutePath(String filePath) {
@@ -47,7 +47,7 @@ public class Differ {
         }
     }
 
-    private static String pathToString(Path absoluteFilePath) throws IOException {
+    private static String pathToData(Path absoluteFilePath) throws IOException {
         return Files.readString(absoluteFilePath);
     }
 

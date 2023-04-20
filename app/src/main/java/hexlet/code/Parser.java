@@ -27,11 +27,11 @@ public class Parser {
         return checkingFileExtension;
     }
 
-    public static Map<String, Object> parseToMap(String filesExtension, String filePath)
+    public static Map<String, Object> parseToMap(String filesExtension, String fileData)
             throws JsonProcessingException {
         return switch (filesExtension) {
-            case "json" -> parseFromJSON(filePath);
-            case "yml" -> parseFromYAML(filePath);
+            case "json" -> parseFromJSON(fileData);
+            case "yml" -> parseFromYAML(fileData);
             default -> throw new RuntimeException(NO_FILE_EXTENSION_WARNING);
         };
     }
@@ -53,17 +53,13 @@ public class Parser {
         }
     }
 
-    private static Map<String, Object> parseFromJSON(String filePath) throws JsonProcessingException {
+    private static Map<String, Object> parseFromJSON(String fileData) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> jSONMap = mapper.readValue(filePath, new TypeReference<>() { });
-
-        return jSONMap;
+        return mapper.readValue(fileData, new TypeReference<>() { });
     }
 
-    private static Map<String, Object> parseFromYAML(String filePath) throws JsonProcessingException {
+    private static Map<String, Object> parseFromYAML(String fileData) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        Map<String, Object> yAMLMap = mapper.readValue(filePath, new TypeReference<>() { });
-
-        return yAMLMap;
+        return mapper.readValue(fileData, new TypeReference<>() { });
     }
 }
